@@ -76,6 +76,39 @@ public class Frame {
 		return tiles;
 	}
 
+	public Tile accessByIndex (int i) throws Exception
+	{
+		if (i<frame.size()&&i>-1)
+			return frame.get(i);
+		else
+			throw new Exception("Outside of scope of this frame");
+	}
+
+
+	//allows access to single letter in the frame
+	public Tile accessByLetter (char checkedCharacter) {
+		if (this.isStringIn(checkedCharacter))
+			return frame.get(atWhichIndex(checkedCharacter));	//frame.get(accessTileByIndex(atWhichIndex(checkedCharacter)));
+		else return null;
+	}
+
+
+	public int atWhichIndex (char checkedLetter) {
+		int whichIndex = -1;
+		if (!frame.isEmpty())
+			if (this.isStringIn(checkedLetter)){
+				for (int i=0; i<frame.size(); i++) {
+					if (frame.get(i).getLetter() == checkedLetter)
+					{whichIndex = i; return whichIndex;}
+				} //if not in, in previous version, return -1
+			}
+
+		if(whichIndex == -1)
+			throw new IllegalArgumentException("Didnt convert to uppercase");
+		return whichIndex;
+		//return checkedLetter;
+	}
+
 	public void refill(Pool pool) {
 		int numTilesToDraw = MAX_TILES - tiles.size();
 		ArrayList<Tile> draw = pool.drawTiles(numTilesToDraw);

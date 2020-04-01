@@ -1,8 +1,10 @@
+import java.util.*;
+
 public class Board {
 
-	public static final int BOARD_SIZE = 15;
-	public static final int BOARD_CENTRE = 7;
-	private static int BONUS = 50;
+	private Square[][] squares;
+	private int checkCode; //nr of validity check not passed
+	private int numPlays;
 
 	public static final int WORD_INCORRECT_FIRST_PLAY = 0;
 	public static final int WORD_OUT_OF_BOUNDS = 1;
@@ -10,84 +12,107 @@ public class Board {
 	public static final int WORD_LETTER_CLASH = 3;
 	public static final int WORD_NO_LETTER_PLACED = 4;
 	public static final int WORD_NO_CONNECTION = 5;
-	public static final int WORD_EXCLUDES_LETTERS = 6;
-
-	private static final int[][] LETTER_MULTIPLIER =
-			{ 	{1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1},
-				{2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1},
-				{1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1},
-				{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
-				{1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1},
-				{1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 3, 1},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2},
-				{1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} };
-	private static final int[][] WORD_MULTIPLIER =
-			{   {3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3},
-				{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1},
-				{1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1},
-				{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
-				{1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{3, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1},
-				{1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1},
-				{1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1},
-				{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1},
-				{3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3} };
-
-	private Square[][] squares;
-	private int errorCode;
-	private int numPlays;
-	private int points;
+	public static final int BOARD_SIZE = 15;
+	public static final int BOARD_CENTRE = 7;
 
 	Board() {
 		squares = new Square[BOARD_SIZE][BOARD_SIZE];
-		for (int r=0; r<BOARD_SIZE; r++)  {
-			for (int c=0; c<BOARD_SIZE; c++)   {
-				squares[r][c] = new Square(LETTER_MULTIPLIER[r][c],WORD_MULTIPLIER[r][c]);
-			}
-		}
+		Pattern pattern = new Pattern(squares);
+		pattern.drawScrabble(squares);
 		numPlays = 0;
-		points = 0;
 	}
 
-	public boolean isLegalPlay(Frame frame, Word word) {
+	public Square[][] getBoard(){
+		return squares;
+	}
+
+
+
+	public void display() {
+		for(int i=0; i<this.BOARD_SIZE;i++) {
+			System.out.printf("            -------------------------------------------------------------\n        %-4d", i);
+			for(int j=0; j<this.BOARD_SIZE; j++) {
+				System.out.print("| " + squares[i][j]);
+			}
+			System.out.println("|");
+		}
+		System.out.println("            -------------------------------------------------------------");
+		System.out.println("              0   1   2   3   4   5   6   7   8   9   10  11  12  13  14");
+	}
+
+
+
+
+
+	public void reset() {
+		for (Square [] rows:squares)
+			for (Square square:rows)
+				square.removeTile();
+	}
+
+
+
+	public void place(Word word, Player player) {
+		Frame frame = player.getFrame();
+		int r = word.getRow();
+		int c = word.getColumn();
+		for (int i=0; i<word.getLength(); i++) {
+			if (squares[r][c].isEmpty()) {
+				word.bingoIncrementor(); //if all 7 tiles from frame are put on empty squares to create a word, bingo, 50 bonus points
+				char letter = word.getLetter(i);
+				Tile tile = frame.accessByLetter(letter);
+				squares[r][c].placeTile(tile);
+				frame.removeTile(tile);
+			}
+			if (word.isHorizontal()) {
+				c++;
+			} else {
+				r++;
+			}
+		}
+		this.increasePlayerScore(word, player);
+
+
+		numPlays++;
+	}
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// getCheckCode precondition: isLegal is false
+	public int getCheckCode() {
+		return checkCode;
+	};
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+	public boolean isLegal(Frame frame, Word word) {
 		boolean isLegal = true;
 		//check for invalid first play
 		if (numPlays == 0 &&
-				((word.isHorizontal() && (word.getRow()!=BOARD_CENTRE || word.getFirstColumn()>BOARD_CENTRE ||
+				((word.isHorizontal() && (word.getRow()!=BOARD_CENTRE || word.getColumn()>BOARD_CENTRE ||
 						word.getLastColumn()<BOARD_CENTRE)) ||
-						(word.isVertical() && (word.getColumn()!=BOARD_CENTRE || word.getFirstRow()>BOARD_CENTRE ||
+						(word.isVertical() && (word.getColumn()!=BOARD_CENTRE || word.getRow()>BOARD_CENTRE ||
 								word.getLastRow()<BOARD_CENTRE)))) {
 			isLegal = false;
-			errorCode = WORD_INCORRECT_FIRST_PLAY;
+			checkCode = WORD_INCORRECT_FIRST_PLAY;
 		}
 		// check for word out of bounds
 		if (isLegal && ((word.isHorizontal() && word.getLastColumn()>= BOARD_SIZE) ||
 				(word.isVertical() && word.getLastRow()>= BOARD_SIZE))) {
 			isLegal = false;
-			errorCode = WORD_OUT_OF_BOUNDS;
+			checkCode = WORD_OUT_OF_BOUNDS;
 		}
 		// check that letters in the word do not clash with those on the board
 		String lettersPlaced = "";
 		if (isLegal) {
-			int r = word.getFirstRow();
-			int c = word.getFirstColumn();
+			int r = word.getRow();
+			int c = word.getColumn();
 			for (int i = 0; i < word.getLength() && isLegal; i++) {
-				if (squares[r][c].isOccupied() && squares[r][c].getTile().getLetter() != word.getLetter(i)) {
+				if (!squares[r][c].isEmpty() && squares[r][c].getCharacter() != word.getLetter(i)) {
 					isLegal = false;
-					errorCode = WORD_LETTER_CLASH;
-				} else if (!squares[r][c].isOccupied()) {
+					checkCode = WORD_LETTER_CLASH;
+				} else if (squares[r][c].isEmpty()) {
 					lettersPlaced = lettersPlaced + word.getLetter(i);
 				}
 				if (word.isHorizontal()) {
@@ -100,89 +125,95 @@ public class Board {
 		// check that more than one letter is placed
 		if (isLegal && lettersPlaced.length() == 0) {
 			isLegal = false;
-			errorCode = WORD_NO_LETTER_PLACED;
+			checkCode = WORD_NO_LETTER_PLACED;
 		}
 		// check that the letters placed are in the frame
-		if (isLegal && !frame.isAvailable(lettersPlaced)) {
+		if (isLegal && !frame.isStringIn(lettersPlaced)) {
 			isLegal = false;
-			errorCode = WORD_LETTER_NOT_IN_FRAME;
+			checkCode = WORD_LETTER_NOT_IN_FRAME;
 		}
 		// check that the letters placed connect with the letters on the board
-		if (isLegal && numPlays>0) {
-			int boxTop = Math.max(word.getFirstRow()-1,0);
+		if (isLegal && numPlays!=0) {
+			int boxTop = Math.max(word.getRow()-1,0);
 			int boxBottom = Math.min(word.getLastRow()+1, BOARD_SIZE-1);
-			int boxLeft = Math.max(word.getFirstColumn()-1,0);
+			int boxLeft = Math.max(word.getColumn()-1,0);
 			int boxRight = Math.min(word.getLastColumn()+1, BOARD_SIZE-1);
 			boolean foundConnection = false;
 			for (int r=boxTop; r<=boxBottom && !foundConnection; r++) {
 				for (int c=boxLeft; c<=boxRight && !foundConnection; c++) {
-					if (squares[r][c].isOccupied()) {
+					if (!squares[r][c].isEmpty()) {
 						foundConnection = true;
 					}
 				}
 			}
 			if (!foundConnection) {
 				isLegal = false;
-				errorCode = WORD_NO_CONNECTION;
-			}
-		}
-		// check there are no tiles before the word
-		if (isLegal && numPlays>0) {
-			if ( (word.isHorizontal() && word.getFirstColumn()>0 &&
-					squares[word.getRow()][word.getFirstColumn()-1].isOccupied()) ||
-					(word.isHorizontal() && word.getLastColumn()<BOARD_SIZE-1 &&
-					squares[word.getRow()][word.getLastColumn()+1].isOccupied()) ||
-					(word.isVertical() && word.getFirstRow()>0 &&
-					squares[word.getFirstRow()-1][word.getColumn()].isOccupied()) ||
-					(word.isVertical() && word.getLastRow()<BOARD_SIZE-1 &&
-					squares[word.getLastRow()+1][word.getColumn()].isOccupied())) {
-				isLegal = false;
-				errorCode = WORD_EXCLUDES_LETTERS;
+				checkCode = WORD_NO_CONNECTION;
 			}
 		}
 		return isLegal;
 	}
 
-	// getCheckCode precondition: isLegal is false
-	public int getErrorCode() {
-		return errorCode;
-	}
 
-	// place precondition: isLegal is true
-	public void place(Frame frame, Word word) {
-		points = 0;
-		boolean frameWasFull = frame.isFull();
-		int wordMultipler = 1;
-		int r = word.getFirstRow();
-		int c = word.getFirstColumn();
-		for (int i=0; i<word.getLength(); i++) {
-			if (!squares[r][c].isOccupied()) {
-				char letter = word.getLetter(i);
-				Tile tile = frame.getTile(letter);
-				squares[r][c].add(tile);
-				frame.removeTile(tile);
-				points = points + tile.getValue() * squares[r][c].getLetterMuliplier();
-				wordMultipler = wordMultipler * squares[r][c].getWordMultiplier();
-			}
-			if (word.isHorizontal()) {
-				c++;
-			} else {
-				r++;
-			}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	private int returnScore (Word word)
+	{
+		int firstPositionX = word.getRow();
+		int firstPositionY = word.getColumn();
+
+		int score = 0;
+		if (word.isHorizontal()) { //h placement
+			for (int i = 0; i < word.getLength(); i++)
+				score += squares[firstPositionX][firstPositionY + i].getPlacementScore(); //add each multiplication letter score with tile score for word score
+			for (int i = 0; i < word.getLength(); i++)
+				score *= squares[firstPositionX][firstPositionY + i].getWordMultiplier(); //multiply by word multipliers if there are any, otherwise by 1
 		}
-		points = points * wordMultipler;
-		if (frameWasFull && frame.isEmpty()) {
-			points = points + BONUS;
+		else 	/*if (word.isVertical())*/ { //v placement
+			for (int i = 0; i < word.getLength(); i++)
+				score += squares[firstPositionX+i][firstPositionY].getPlacementScore(); //add each multiplication letter score with tile score for word score
+			for (int i = 0; i < word.getLength(); i++)
+				score *= squares[firstPositionX+i][firstPositionY].getWordMultiplier(); //multiply by word multipliers if there are any, otherwise by 1
 		}
-		numPlays++;
+		if (word.isBingo())
+			score+=50;
+		return score;
+
 	}
 
-	public int getPoints() {
-		return points;
+
+
+	public void increasePlayerScore (Word word,Player player) {
+		int score = this.returnScore(word);
+		player.increaseScore(score);
+		player.increaseScore(this.parallelScore(word));
+		//System.out.println("Great word choice,"+player.getName()+"! Your worth is "+score);
 	}
 
-	public Square getSquare(int row, int col) {
-		return squares[row][col];
+
+
 	}
 
-}
+
+
+
+
+	public void challengeWord (Word word, Player player2) {
+		int firstPositionX = word.getRow();
+		int firstPositionY = word.getColumn();
+		//substracting score of bad word in other player than is used in the round
+		int score = this.returnScore(word);
+		player2.substractScore(score); //another player, not current player
+		//clearing board from bad word
+
+			for (int i = 0; i < word.getLength(); i++) {
+				squares[firstPositionX][firstPositionY].removeTile(); //remove placement
+				if (word.isVertical())
+					firstPositionX++;
+				else
+					firstPositionY++;
+
+			}
+	}

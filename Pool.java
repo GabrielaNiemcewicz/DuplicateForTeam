@@ -27,6 +27,12 @@ public class Pool {
 		return pool.isEmpty();
 	}
 
+	public void resetPool() {
+		pool.removeAll(pool);
+		setPool();
+		System.out.println("Pool has been reset");
+	}
+
 	public ArrayList<Tile> drawTiles(int numRequested) {
 		int numGiven;
 		if (numRequested > pool.size()) {
