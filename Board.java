@@ -10,7 +10,8 @@ public class Board {
 	public static final int WORD_LETTER_CLASH = 3;
 	public static final int WORD_NO_LETTER_PLACED = 4;
 	public static final int WORD_NO_CONNECTION = 5;
-	public static final int WORD_EXCLUDES_LETTERS = 6;
+	public static final int WORD_EXCLUDES_LETTERS = 6;	
+	public static final int WORD_ONE_LETTER_LENGTH = 7;
 
 	private static final int[][] LETTER_MULTIPLIER =
 			{ 	{1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1},
@@ -102,6 +103,13 @@ public class Board {
 			isLegal = false;
 			errorCode = WORD_NO_LETTER_PLACED;
 		}
+		//SPRINT 4 - no 1 letter-length words
+		if (isLegal && word.getLength() == 1) {
+			isLegal = false;
+			errorCode = WORD_ONE_LETTER_LENGTH; 
+		}
+
+
 		// check that the letters placed are in the frame
 		if (isLegal && !frame.isAvailable(lettersPlaced)) {
 			isLegal = false;

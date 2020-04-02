@@ -269,6 +269,9 @@ public class UserInterface {
             case Board.WORD_EXCLUDES_LETTERS:
                 message = "Error: The word places excludes letters already on the board";
                 break;
+	    case Board.WORD_ONE_LETTER_LENGTH:
+		message = "Error: The word places excludes letters already on the board";
+                break;
         }
         printLine(message);
     }
