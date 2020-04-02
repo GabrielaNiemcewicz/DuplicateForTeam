@@ -68,8 +68,6 @@ public class Board {
 				Tile tile = frame.getTile(letter);
 				squares[r][c].add(tile);
 				frame.removeTile(tile);
-				points = points + tile.getValue() * squares[r][c].getLetterMuliplier();
-				wordMultipler = wordMultipler * squares[r][c].getWordMultiplier();
 			}
 			if (word.isHorizontal()) {
 				c++;
@@ -77,7 +75,7 @@ public class Board {
 				r++;
 			}
 		}
-		points = points * wordMultipler;
+		points = this.returnScore(word);
 		if (frameWasFull && frame.isEmpty()) {
 			points = points + BONUS;
 		}
@@ -85,17 +83,45 @@ public class Board {
 		numPlays++;
 	}
 	
-	
+	private int returnScore (Word word)
+	{
+		int positionX = word.getRow();
+		int positionY = word.getColumn();
+		int wordMultiplier = 1;
+
+		int score = 0;
+		  //h placement
+			for (int i = 0; i < word.getLength(); i++)
+				score += squares[positionX][positionY + i].getPlacementScore(); //add each multiplication letter score with tile score for word score
+				wordMultiplier *= squares[positionX][positionY + i].getWordMultiplier(); //multiply by word multipliers if there are any, otherwise by 1
+				if (word.isHorizontal())
+					positionY++;
+				else /*if (word.isVertical())*/ 
+					positionX++;
+		
+		return score;
+
+	}
+
+
+
+	public void increasePlayerScore (Word word,Player player) {
+		int score = this.returnScore(word);
+		player.addPoints(score);
+		player.addPoints(this.parallelScore(word));
+		//System.out.println("Great word choice,"+player.getName()+"! Your worth is "+score);
+	}
+
 	
 	private int parallelScore(Word word){
 		   int r =word.getRow();
 		   int c = word.getColumn();
 		   int firstIndex; //where parallel word starts- how high or how much left
 		   String tempWord = "";
-		   for (int i= -1; i<2; i+=2) //up and down, left or right
-		      for(int j=0;j<word.getLength(); j++)
+		   for (int i= -1; i<2; i+=2) //up and down for h, left or right for v
+		      for(int j=0;j<word.getLength(); j++) //around each one square-letter in word
 
-		   if(!squares[r][c].isOccupied())
+		   if(!squares[r][c].isOccupied()) 
 		         {if(word.isHorizontal()) c++;
 		         else r++;}
 		   else while (squares[r][c].isOccupied()&&r>=0&&c>=0) //find parallel

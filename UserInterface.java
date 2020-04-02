@@ -95,13 +95,13 @@ public class UserInterface {
         var style = new StringBuilder();
         style.append("-fx-background-radius: 0;");
         String color;
-        if (square.isDoubleLetter()) {
+        if (square.getLetterMultiplier()==2) {
             color = "8080ff";
-        } else if (square.isTripleLetter()) {
+        } else if (square.getLetterMultiplier()==3) {
             color = "0000ff";
-        } else if (square.isDoubleWord()) {
+        } else if (square.getWordMultiplier()==2) {
             color = "ff8080";
-        } else if (square.isTripleWord()) {
+        } else if (square.getWordMultiplier()==3) {
             color = "ff0000";
         } else {
             color = "ffffff";
@@ -146,13 +146,19 @@ public class UserInterface {
         } else if (!gameOver && (command.equals("SCORE") || command.equals("S"))) {
             printScores();
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
-            printPoolSize();
-        } else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
+            printPoolSize();    
+        } 
+        else if (!gameOver && (command.matches("NAME( )+([A-Z_]){1,7}") || command.matches("N( )+([A-Z_]){1,7}"))) {
+            String[] parts = command.split("( )+");
+            String letters = parts[1];
+        
+        
+        else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
             if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(),word)) {
                 printPlayError(scrabble.getBoard().getErrorCode());
             } else {
-                scrabble.getBoard().place(currentPlayer.getFrame(),word);
+                scrabble.getBoard().place(currentPlayer.getFrame(),word, );
                 refreshBoard();
                 int points = scrabble.getBoard().getPoints();
                 printPoints(points);
@@ -297,7 +303,7 @@ public class UserInterface {
     }
 
     private void printWinner() {
-        int maxScore = -1000;
+        int maxScore = -1;
         ArrayList<Player> winners = new ArrayList<>();
         boolean draw = false;
         for (Player player : scrabble.getPlayers()) {
