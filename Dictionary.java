@@ -4,51 +4,53 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Map;
-public class Dictionary
-{
+public class Dictionary {
     Set<String> dictionary = new HashSet<>();
+    boolean match = false;
 
-    public Set<String> getDictionary()
-    {
+    public Set<String> getDictionary() {
         return dictionary;
     }
-    public boolean contain(String words)
-    {
+
+    public boolean contain(String words) {
         return dictionary.contains(words);
     }
-    public void Dictionarysearch()
-    {
+
+    public void dictionarysearch(String soughtWord) {
         BufferedReader objReader = null;
-        try
-        {
+        try {
             String currentline;
             objReader = new BufferedReader(new FileReader(""));
-            while ((currentline=objReader.readLine())!=null)
-            {
-                System.out.println(currentline);
+            while ((currentline = objReader.readLine()) != null) {
+                if (currentline == soughtWord)
+                    match=true;
             }
-        }
-        catch (IOException e)
-        {
+
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
-                if (objReader !=null)
-                {
+                if (objReader != null) {
                     objReader.close();
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
-    public static void main(String[] args)
+    public boolean wasFound (){
+        return match;
+    }
+
+    public boolean challengedToRemove(String soughtWord){
+     this.dictionarysearch(soughtWord);
+     return match ? false:true;
+    }
+
+    public static void main (String[]args)
     {
 
     }
 }
+
