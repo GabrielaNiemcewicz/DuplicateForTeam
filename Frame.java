@@ -6,32 +6,32 @@ public class Frame {
 	public static final int EXCHANGE_NOT_AVAILABLE = 0;
 	public static final int EXCHANGE_NOT_ENOUGH_IN_POOL = 1;
 
-	private ArrayList<Tile> tiles;
+	private ArrayList<Tile> frame;
 	int errorCode;
 
 	Frame() {
-		tiles = new ArrayList<>();
+		frame = new ArrayList<>();
 	}
 
 	public int size() {
-		return(tiles.size());
+		return(frame.size());
 	}
 
 	public boolean isEmpty() {
-		return tiles.isEmpty();
+		return frame.isEmpty();
 	}
 
 	public boolean isFull() {
-		return tiles.size() == MAX_TILES;
+		return this.size() == MAX_TILES;
 	}
 
 	public boolean isAvailable(String letters) {
 		boolean found = true;
-		if (letters.length() > tiles.size()) {
+		if (letters.length() > this.size()) {
 			found = false;
 		}
 		else {
-			ArrayList<Tile> copyTiles = new ArrayList<>(tiles);
+			ArrayList<Tile> copyTiles = new ArrayList<>(frame);
 			for (int i=0; i<letters.length() && found; i++) {
 				Tile tileSought = new Tile(letters.charAt(i));
 				if (copyTiles.contains(tileSought)) {
@@ -45,22 +45,35 @@ public class Frame {
 		return found;
 	}
 
+	
+	public boolean isAvailable (char letter) {
+	boolean found = false;
+	if (this.size() > 0) 
+		{
+			Tile tileSought = new Tile(letter);
+			if (frame.contains(tileSought))
+				found = true;	
+		}
+	
+	return found;
+}
+	
 	// remove precondition: isAvailable(letters) is true
 	public void removeTile(Tile tile) {
-		tiles.remove(tile);
+		frame.remove(tile);
 	}
 
 	// remove precondition: isAvailable(letters) is true
 	public void removeTiles(ArrayList<Tile> tiles) {
 		for (Tile tile : tiles) {
-			this.tiles.remove(tile);
+			frame.remove(tile);
 		}
 	}
 
 	// getTile precondition: isAvailable(letters) is true
 	public Tile getTile(Character letter) {
-		int index = tiles.indexOf(new Tile(letter));
-		return tiles.get(index);
+		int index = frame.indexOf(new Tile(letter));
+		return frame.get(index);
 	}
 
 	// remove precondition: isAvailable(letters) is true
@@ -73,13 +86,44 @@ public class Frame {
 	}
 
 	public ArrayList<Tile> getTiles() {
-		return tiles;
+		return frame;
+	}
+
+	public Tile accessByIndex (int i) throws Exception
+	{
+		if (i<frame.size()&&i>-1)
+			return frame.get(i);
+		else
+			throw new Exception("Outside of scope of this frame");
+	}
+
+
+	//allows access to single letter in the frame
+	public Tile accessByLetter (char checkedCharacter) {
+		if (this.isAvailable(checkedCharacter))
+			return frame.get(atWhichIndex(checkedCharacter));	//frame.get(accessTileByIndex(atWhichIndex(checkedCharacter)));
+		else return null;
+	}
+
+
+	public int atWhichIndex (char checkedLetter) {
+		int whichIndex = -1;
+		if (!frame.isEmpty())
+			if (this.isAvailable(checkedLetter)){
+				for (int i=0; i<frame.size(); i++) {
+					if (frame.get(i).getLetter() == checkedLetter)
+					{whichIndex = i; return whichIndex;}
+				} //if not in, in previous version, return -1
+			}
+
+		return whichIndex;
+		//return checkedLetter;
 	}
 
 	public void refill(Pool pool) {
-		int numTilesToDraw = MAX_TILES - tiles.size();
+		int numTilesToDraw = MAX_TILES - frame.size();
 		ArrayList<Tile> draw = pool.drawTiles(numTilesToDraw);
-		tiles.addAll(draw);
+		frame.addAll(draw);
 	}
 
 	public boolean isLegalExchange(Pool pool, String letters) {
@@ -110,7 +154,7 @@ public class Frame {
 
 	@Override
 	public String toString() {
-		return tiles.toString();
+		return frame.toString();
 	}
 
 }
