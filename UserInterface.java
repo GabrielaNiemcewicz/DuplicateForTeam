@@ -95,13 +95,13 @@ public class UserInterface {
         var style = new StringBuilder();
         style.append("-fx-background-radius: 0;");
         String color;
-        if (square.getLetterMultiplier()==2) {
+        if (square.isDoubleLetter()) {
             color = "8080ff";
-        } else if (square.getLetterMultiplier()==3) {
+        } else if (square.isTripleLetter()) {
             color = "0000ff";
-        } else if (square.getWordMultiplier()==2) {
+        } else if (square.isDoubleWord()) {
             color = "ff8080";
-        } else if (square.getWordMultiplier()==3) {
+        } else if (square.isTripleWord()) {
             color = "ff0000";
         } else {
             color = "ffffff";
@@ -111,7 +111,7 @@ public class UserInterface {
             style.append("-fx-font-size: 14pt;");
             style.append("-fx-font-weight: bold;");
             button.setStyle(style.toString());
-            button.setText(square.toString() + "");  // placed letter
+            button.setText(square.getTile() + "");  // placed letter
         } else {
             style.append("-fx-font-size: 8pt;");
             style.append("-fx-font-weight: lighter;");
@@ -146,24 +146,13 @@ public class UserInterface {
         } else if (!gameOver && (command.equals("SCORE") || command.equals("S"))) {
             printScores();
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
-            printPoolSize();    
-        } 
-        else if (!gameOver && (command.matches("NAME( )") || command.matches("N( )"))) {
-        {	String[] parts = command.split("( )+");
-           	String name = parts[1];
-            if(name.length()>0)
-            	currentPlayer.setName(name);
-        }
-        else if (!gameOver && (command.matches("CHALLENGE( )") || command.matches("C( )"))) {
-            {	//scrabble.getBoard().challenge(word); //needs getting implemented
-            }
-        
-        else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
+            printPoolSize();
+        } else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
             if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(),word)) {
                 printPlayError(scrabble.getBoard().getErrorCode());
             } else {
-                scrabble.getBoard().place(currentPlayer.getFrame(),word, );
+                scrabble.getBoard().place(currentPlayer.getFrame(),word);
                 refreshBoard();
                 int points = scrabble.getBoard().getPoints();
                 printPoints(points);
@@ -171,7 +160,6 @@ public class UserInterface {
                 currentPlayer.getFrame().refill(scrabble.getPool());
                 scrabble.scorePlay();
                 scrabble.turnOver();
-              ///////////////////////////////////////////////////////////////////////////////////Chris' error?
                 if (currentPlayer.getFrame().isEmpty() && currentPlayer.getFrame().isEmpty()) {
                     gameOver = true;
                 }
@@ -251,7 +239,7 @@ public class UserInterface {
     }
 
     private void printHelp() {
-        printLine("Command options: Q (quit), P (pass), X (exchange), S (scores), O (pool), N(name) or play");
+        printLine("Command options: Q (quit), P (pass), X (exchange), S (scores), O (pool) or play");
         printLine("For an exchange, enter the letters that you wish to exchange. E.g. X ABC");
         printLine("For a play, enter the grid reference of the first letter, and A (across) or D (down)m and the word optionally including any letters already on the board. E.g. A1 D HELLO");
         printLine("For blank use underscore");
@@ -280,8 +268,6 @@ public class UserInterface {
                 break;
             case Board.WORD_EXCLUDES_LETTERS:
                 message = "Error: The word places excludes letters already on the board";
-            case Board.WORD_ONE_LETTER_LENGTH:
-            	message = "Error: The word is only 1 letter long, that's too short";
                 break;
         }
         printLine(message);
@@ -311,7 +297,7 @@ public class UserInterface {
     }
 
     private void printWinner() {
-        int maxScore = -1;
+        int maxScore = -1000;
         ArrayList<Player> winners = new ArrayList<>();
         boolean draw = false;
         for (Player player : scrabble.getPlayers()) {
