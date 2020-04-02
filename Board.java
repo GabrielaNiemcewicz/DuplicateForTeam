@@ -13,8 +13,10 @@ public class Board {
 	public static final int WORD_LETTER_CLASH = 3;
 	public static final int WORD_NO_LETTER_PLACED = 4;
 	public static final int WORD_NO_CONNECTION = 5;
+	public static final int WORD_EXCLUDES_LETTERS = 6;
 	public static final int BOARD_SIZE = 15;
 	public static final int BOARD_CENTRE = 7;
+	public static final int WORD_ONE_LETTER_LENGTH = 8;
 	
 	private static int BONUS = 50;
 
@@ -90,14 +92,14 @@ public class Board {
 		int wordMultiplier = 1;
 
 		int score = 0;
-		  //h placement
-			for (int i = 0; i < word.getLength(); i++)
-				score += squares[positionX][positionY + i].getPlacementScore(); //add each multiplication letter score with tile score for word score
-				wordMultiplier *= squares[positionX][positionY + i].getWordMultiplier(); //multiply by word multipliers if there are any, otherwise by 1
+		  
+			for (int i = 0; i < word.getLength(); i++) {
+				score += squares[positionX][positionY].getPlacementScore(); //add each multiplication letter score with tile score for word score
+				wordMultiplier *= squares[positionX][positionY].getWordMultiplier(); //multiply by word multipliers if there are any, otherwise by 1
 				if (word.isHorizontal())
 					positionY++;
 				else /*if (word.isVertical())*/ 
-					positionX++;
+					positionX++;}
 		
 		return score;
 
@@ -196,6 +198,11 @@ public class Board {
 			isLegal = false;
 			checkCode = WORD_NO_LETTER_PLACED;
 		}
+		if (isLegal && word.getLength() == 1) {
+			isLegal = false;
+			checkCode = WORD_ONE_LETTER_LENGTH; 
+		}
+		
 		// check that the letters placed are in the frame
 		if (isLegal && !frame.isAvailable(lettersPlaced)) {
 			isLegal = false;

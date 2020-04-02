@@ -111,7 +111,7 @@ public class UserInterface {
             style.append("-fx-font-size: 14pt;");
             style.append("-fx-font-weight: bold;");
             button.setStyle(style.toString());
-            button.setText(square.getTile() + "");  // placed letter
+            button.setText(square.toString() + "");  // placed letter
         } else {
             style.append("-fx-font-size: 8pt;");
             style.append("-fx-font-weight: lighter;");
@@ -148,11 +148,12 @@ public class UserInterface {
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
             printPoolSize();    
         } 
-        else if (!gameOver && (command.matches("NAME( )+([A-Z_]){1,7}") || command.matches("N( )+([A-Z_]){1,7}"))) {
-            String[] parts = command.split("( )+");
-            String letters = parts[1];
-        
-        
+        else if (!gameOver && (command.matches("NAME( )") || command.matches("N( )"))) {
+        {	String[] parts = command.split("( )+");
+           	String name = parts[1];
+            if(name.length()>0)
+            	currentPlayer.setName(name);
+        }
         else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
             if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(),word)) {
@@ -166,6 +167,7 @@ public class UserInterface {
                 currentPlayer.getFrame().refill(scrabble.getPool());
                 scrabble.scorePlay();
                 scrabble.turnOver();
+              ///////////////////////////////////////////////////////////////////////////////////Chris' error?
                 if (currentPlayer.getFrame().isEmpty() && currentPlayer.getFrame().isEmpty()) {
                     gameOver = true;
                 }
@@ -245,7 +247,7 @@ public class UserInterface {
     }
 
     private void printHelp() {
-        printLine("Command options: Q (quit), P (pass), X (exchange), S (scores), O (pool) or play");
+        printLine("Command options: Q (quit), P (pass), X (exchange), S (scores), O (pool), N(name) or play");
         printLine("For an exchange, enter the letters that you wish to exchange. E.g. X ABC");
         printLine("For a play, enter the grid reference of the first letter, and A (across) or D (down)m and the word optionally including any letters already on the board. E.g. A1 D HELLO");
         printLine("For blank use underscore");
@@ -274,6 +276,8 @@ public class UserInterface {
                 break;
             case Board.WORD_EXCLUDES_LETTERS:
                 message = "Error: The word places excludes letters already on the board";
+            case Board.WORD_ONE_LETTER_LENGTH:
+            	message = "Error: The word is only 1 letter long, that's too short";
                 break;
         }
         printLine(message);
