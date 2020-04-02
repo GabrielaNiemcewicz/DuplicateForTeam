@@ -154,6 +154,10 @@ public class UserInterface {
             if(name.length()>0)
             	currentPlayer.setName(name);
         }
+        else if (!gameOver && (command.matches("CHALLENGE( )") || command.matches("C( )"))) {
+            {	//scrabble.getBoard().challenge(word); //needs getting implemented
+            }
+        
         else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
             if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(),word)) {

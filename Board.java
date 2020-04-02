@@ -3,7 +3,7 @@ import java.util.*;
 public class Board {
 
 	private Square[][] squares;
-	private int checkCode; //nr of validity check not passed
+	private int errorCode; //nr of validity check not passed
 	private int numPlays;
 	private int points = 0;
 
@@ -27,6 +27,11 @@ public class Board {
 		numPlays = 0;
 	}
 
+	
+	public int getErrorCode() {
+		return errorCode;
+	}
+	
 	public Square[][] getBoard(){
 		return squares;
 	}
@@ -100,12 +105,13 @@ public class Board {
 					positionY++;
 				else /*if (word.isVertical())*/ 
 					positionX++;}
-		
+		this.points = score;
 		return score;
 
 	}
 
 
+	
 
 	public void increasePlayerScore (Word word,Player player) {
 		int score = this.returnScore(word);
@@ -266,5 +272,14 @@ public class Board {
 			}
 			
 	} 
+	
+	public int getPoints() {
+		return points;
+	}
+
+	public Square getSquare(int row, int col) {
+		return squares[row][col];
+	}
+
 	
 }
