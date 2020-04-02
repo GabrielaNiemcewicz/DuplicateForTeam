@@ -63,8 +63,8 @@ public class Square extends StackPane {
 		return type.getLetterMultiplier();
 	}
 	
-	public boolean isEmpty() {
-		return  this.tile == null ? true : false;
+	public boolean isOccupied() {
+		return  this.tile == null ? false : true;
 	}
 
 	public int getTileValue(){
