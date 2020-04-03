@@ -1,6 +1,6 @@
 public class Board {
 
-    private Word lastWord;
+    public Word lastWord;
 
     public static final int BOARD_SIZE = 15;
     public static final int BOARD_CENTRE = 7;
@@ -209,14 +209,14 @@ public class Board {
 
     //precondition: challenge was successful
     public void removeChallenged(Pool pool, Player otherPlayer){ //other player than current one
-        if(this.numPlays<2)
+        if(this.numPlays<1)
             errorCode = CHALLENGED_BEFORE_FIRST_ROUND;
         else{
 
             int r = this.lastWord.getFirstRow();
             int c = this.lastWord.getFirstColumn();
             int incorrectWordScore;
-            for (int i=0; i<lastWord.getLength(); i++)
+            for (int i=0; i<lastWord.getLength(); i++){
                 if (!this.lastWord.occupiedBeforePlacement(i)) {//to not cause holes in previous words
                     squares[r][c].removeTile(pool);
 
@@ -225,7 +225,7 @@ public class Board {
                 c++;
             } else {
                 r++;
-            }}
+            }}}
        int incorrectWordScore = this.lastWord.getScore();
         otherPlayer.substractPoints(incorrectWordScore);
         this.lastWord = null; //check if that works, if not,do at least: this.lastWord.saveScore(0);

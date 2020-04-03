@@ -29,8 +29,11 @@ public class Dictionary
         try
         {
             String currentline;
-            objReader = new BufferedReader(new FileReader("dictonary.txt"));
-            while ((currentline = objReader.readLine()) != null)
+            System.out.println("ji");
+            File file = new File("sowpods.txt");
+            BufferedReader sin = new BufferedReader(new FileReader(file));
+            System.out.println("hi");
+            while ((currentline = sin.readLine()) != null)
             {
                 dictionar.add(currentline);
             }
@@ -113,10 +116,10 @@ public class Dictionary
         this.dictionarysearch(soughtWord);
         return match ? false:true;
     }
-    public static void main (String[]args)
+    /*public static void main (String[]args)
     {
         Dictionary  dick = new Dictionary();
         dick.readToArrayList();
-        dick.dictionarysearch("");
-    }
+        dick.dictionarysearch("zzz");
+    }*/
 }

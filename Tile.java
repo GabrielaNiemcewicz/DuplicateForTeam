@@ -54,7 +54,7 @@ public class Tile {
 
     public void setBlankAs(char missingLetter) {
         if (this.blank) { //precondition: missing letter is uppercase
-            this.letter = letter;
+            this.letter =missingLetter;
             //value of blank 0, stays on letter assignment}
 
         }

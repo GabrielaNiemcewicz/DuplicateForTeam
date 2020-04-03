@@ -56,7 +56,8 @@ public class Frame {
     }
 
 
-    public boolean isAvailable (char letter) {
+    public boolean isAvailable (char letter)
+    {
         boolean found = false;
         if (this.size() > 0)
         {
@@ -89,8 +90,15 @@ public class Frame {
     // remove precondition: isAvailable(letters) is true
     public ArrayList<Tile> getTiles(String letters) {
         ArrayList<Tile> tiles = new ArrayList<>();
+        Tile tempTile;
         for (int i=0; i<letters.length(); i++) {
-            tiles.add(getTile(letters.charAt(i)));
+            tempTile = this.getTile(letters.charAt(i));
+
+            if(tempTile.isBlank())
+                tempTile.setBlankAs(letters.charAt(i));
+
+            tiles.add(tempTile);
+
         }
         return tiles;
     }
@@ -102,7 +110,7 @@ public class Frame {
     public Tile accessByIndex (int i) throws Exception
     {
         if (i<frame.size()&&i>-1)
-            return frame.get(i);
+            return this.frame.get(i);
         else
             throw new Exception("Outside of scope of this frame");
     }
@@ -167,4 +175,17 @@ public class Frame {
         return frame.toString();
     }
 
+    public void add (Tile tile, Tile tile2){
+        frame.add(tile);
+        frame.add(tile2);
+    }
+
+   /* public static void main(String[] args) {
+        Frame frame = new Frame();
+        Tile tile = new Tile('_');
+        Tile tile2 = new Tile ('A');
+        frame.add(tile,tile2);
+
+
+    }*/
 }
