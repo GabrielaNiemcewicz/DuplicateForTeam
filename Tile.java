@@ -56,7 +56,7 @@ public class Tile {
 	if (this.blank)
 		{ //precondition: missing letter is uppercase
             	this.letter = letter;
-            	this.value = TILE_VALUE[(int) letter - (int) 'A'];}
+            	//value of blank 0, stays on letter assignment}
 
 }
 
