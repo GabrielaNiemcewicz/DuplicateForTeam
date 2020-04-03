@@ -1,5 +1,7 @@
 public class Board {
 
+	private Word lastWord;
+
 	public static final int BOARD_SIZE = 15;
 	public static final int BOARD_CENTRE = 7;
 	private static int BONUS = 50;
@@ -197,5 +199,22 @@ public class Board {
 	public Square getSquare(int row, int col) {
 		return squares[row][col];
 	}
+
+	//precondition: challenge was successful
+	public void removeChallenged(Pool pool){
+		int r = this.word.getFirstRow();
+		int c = this.word.getFirstColumn();
+		for (int i=0; i<word.getLength(); i++)
+			squares[r][c].removeTile(pool);
+
+			}
+			if (this.word.isHorizontal()) {
+				c++;
+			} else {
+				r++;
+			}
+//and substract score for the Player's word
+
+}
 
 }
