@@ -147,7 +147,17 @@ public class UserInterface {
             printScores();
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
             printPoolSize();
+        } else if (!gameOver && (command.equals("CHALLENGE") || command.equals("C"))) {
+        //if(scrabble.getBoard().isFirstPlay())
+	//printChallengeFirstWordError();
+	//else    
+	//dictionary.challenge(word) //as Word object
+	////or/////
+	//dictionary.challenge(Board.getWord()) //last round's word stored in board as temWord var on top of board class
         }
+
+
+
 else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
             String[] parts = command.split("( )+");
             String uname = parts[1];
@@ -284,6 +294,16 @@ else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.match
         }
         printLine(message);
     }
+
+
+public void printChallengeFirstWordError(){
+String message = "";
+ message = "Error: You're challenging opponent's word, but he hadn't put any words on board yet.";
+                break;
+        }
+        printLine(message);
+
+}
 
     public void printExchangeError (int errCode) {
         String message = "";

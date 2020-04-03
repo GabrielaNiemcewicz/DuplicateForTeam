@@ -62,6 +62,11 @@ public class Board {
 		points = 0;
 	}
 
+
+	public boolean isFirstPlay(){
+	return numPlays<2?true:false; //first play for first player is 0, for second player- 1. 
+}
+
 	public boolean isLegalPlay(Frame frame, Word word) {
 		boolean isLegal = true;
 		//check for invalid first play
