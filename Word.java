@@ -3,12 +3,14 @@ public class Word {
 	private int row, column; // first letter position
 	private boolean isHorizontal;  // true = horizontal, false = vertical
 	private String letters;
+	int score; //optional score storage for faster challenge
 
 	Word(int row, int column, boolean isHorizontal, String letters) {
 		this.row = row;
 		this.column = column;
 		this.isHorizontal = isHorizontal;
 		this.letters = letters;
+		//this.score=0;
 	}
 
 	// getRow pre-condition: isHorizontal is true
@@ -64,5 +66,14 @@ public class Word {
 	public boolean isVertical () {
 		return !isHorizontal;
 	}
+
+
+	public void saveScore(int score){
+	this.score = score;
+	}
+
+	public void getScore(){
+		return score;
+}
 
 }

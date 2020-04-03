@@ -14,6 +14,7 @@ public class Board {
 	public static final int WORD_NO_CONNECTION = 5;
 	public static final int WORD_EXCLUDES_LETTERS = 6;	
 	public static final int WORD_ONE_LETTER_LENGTH = 7;
+	public static final int CHALLENGED_BEFORE_FIRST_ROUND=8;
 
 	private static final int[][] LETTER_MULTIPLIER =
 			{ 	{1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1},
@@ -189,6 +190,10 @@ public class Board {
 		if (frameWasFull && frame.isEmpty()) {
 			points = points + BONUS;
 		}
+		//check of parallel word score needs to be added
+		word.saveScore(points);
+		this.lastWord = word; //for knowing which word opponent challenges
+
 		numPlays++;
 	}
 
@@ -201,9 +206,14 @@ public class Board {
 	}
 
 	//precondition: challenge was successful
-	public void removeChallenged(Pool pool){
+	public void removeChallenged(Pool pool, Player otherPlayer){ //other player than current one
+	if(this.numPlays<2)
+		errorCode = CHALLENGED_BEFORE_FIRST_ROUND;
+	else{
+		
 		int r = this.word.getFirstRow();
 		int c = this.word.getFirstColumn();
+		int incorrectWordScore;
 		for (int i=0; i<word.getLength(); i++)
 			squares[r][c].removeTile(pool);
 
@@ -213,7 +223,10 @@ public class Board {
 			} else {
 				r++;
 			}
-//and substract score for the Player's word
+		incorrectWordScore = this.lastWord.getScore();
+		otherPlayer.substractPoints(incorrectWordScore);
+		this.lastWord = null; //check if that works, if not,do at least: this.lastWord.saveScore(0);
+			}	
 
 }
 
