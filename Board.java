@@ -167,12 +167,14 @@ public class Board {
 	// place precondition: isLegal is true
 	public void place(Frame frame, Word word) {
 		points = 0;
+		
 		boolean frameWasFull = frame.isFull();
 		int wordMultipler = 1;
 		int r = word.getFirstRow();
 		int c = word.getFirstColumn();
 		for (int i=0; i<word.getLength(); i++) {
 			if (!squares[r][c].isOccupied()) {
+				word.notBelongToOtherWord(i); //assign where Tiles were not occupied- to not remove pre-existing Tiles in challenge, making holes in other words
 				char letter = word.getLetter(i);
 				Tile tile = frame.getTile(letter);
 				squares[r][c].add(tile);
@@ -215,6 +217,7 @@ public class Board {
 		int c = this.word.getFirstColumn();
 		int incorrectWordScore;
 		for (int i=0; i<word.getLength(); i++)
+			if (!this.lastWord.occupiedBeforePlacement) {//to not cause holes in previous words
 			squares[r][c].removeTile(pool);
 
 			}
@@ -222,7 +225,7 @@ public class Board {
 				c++;
 			} else {
 				r++;
-			}
+			}}
 		incorrectWordScore = this.lastWord.getScore();
 		otherPlayer.substractPoints(incorrectWordScore);
 		this.lastWord = null; //check if that works, if not,do at least: this.lastWord.saveScore(0);

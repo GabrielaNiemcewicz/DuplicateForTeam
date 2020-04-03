@@ -4,12 +4,16 @@ public class Word {
 	private boolean isHorizontal;  // true = horizontal, false = vertical
 	private String letters;
 	int score; //optional score storage for faster challenge
+	boolean [] wasOccupied;
 
 	Word(int row, int column, boolean isHorizontal, String letters) {
 		this.row = row;
 		this.column = column;
 		this.isHorizontal = isHorizontal;
 		this.letters = letters;
+		this.wasOccupied = new boolean [letters.length()];
+		for (int i=0; i<letters.length(); i++)
+			wasOccupied[i] = true;
 		//this.score=0;
 	}
 
@@ -74,6 +78,16 @@ public class Word {
 
 	public void getScore(){
 		return score;
+}
+
+//used for challenging- to not take out Tiles that belong to other words, not only challenged one
+	public void notBelongToOtherWord(int positionFromStart){
+		this.wasOccupied[positionFromStart] = false;
+}
+
+
+	public boolean occupiedBeforePlacement(int positionFromStart){
+		return wasOccupied[positionFromStart];
 }
 
 }
