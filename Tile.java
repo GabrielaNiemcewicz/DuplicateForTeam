@@ -1,7 +1,7 @@
 public class Tile {
 
     private static final int BLANK_VALUE = 0;
-    private static final int[] TILE_VALUE = {1,3,3,2,1,4,2,4,1,8,5,1,3,1,1,3,10,1,1,1,1,4,4,8,4,10};
+    private static final int[] TILE_VALUE = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
 
     private boolean blank;
     private char letter;
@@ -52,13 +52,13 @@ public class Tile {
         }
     }
 
-	public setBlankAs(char missingLetter){
-	if (this.blank)
-		{ //precondition: missing letter is uppercase
-            	this.letter = letter;
-            	//value of blank 0, stays on letter assignment}
+    public void setBlankAs(char missingLetter) {
+        if (this.blank) { //precondition: missing letter is uppercase
+            this.letter = letter;
+            //value of blank 0, stays on letter assignment}
 
-}
+        }
 
 
+    }
 }

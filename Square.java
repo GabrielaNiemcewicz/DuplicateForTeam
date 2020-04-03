@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Square {
 
     private int letterMuliplier;
@@ -49,12 +51,11 @@ public class Square {
         return tile;
     }
 
-   public void removeTile(Pool pool) { //used for each letter of challenged words
-	ArrayList<Tile> tiles = new ArrayList<Tile>();
-	tiles.add(this.tile);
-	pool.addTiles(tiles);
-	this.tile = null;
-	
+    public void removeTile(Pool pool) { //used for each letter of challenged words
+        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        tiles.add(this.tile);
+        pool.addTiles(tiles);
+        this.tile = null;
+
+    }
 }
-
-

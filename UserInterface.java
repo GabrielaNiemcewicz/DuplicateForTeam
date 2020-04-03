@@ -116,9 +116,9 @@ public class UserInterface {
             style.append("-fx-font-size: 8pt;");
             style.append("-fx-font-weight: lighter;");
             button.setStyle(style.toString());
-            if (r==0) {
+            if (r == 0) {
                 button.setText(((char) (((int) 'A') + c)) + "");  // column letters
-            } else if (c==0) {
+            } else if (c == 0) {
                 button.setText((r + 1) + "");  // row numbers
             } else {
                 button.setText("");  // empty
@@ -148,30 +148,23 @@ public class UserInterface {
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
             printPoolSize();
         } else if (!gameOver && (command.equals("CHALLENGE") || command.equals("C"))) {
-        //if(scrabble.getBoard().isFirstPlay())
-	//printChallengeFirstWordError();
-	//else    
-	//dictionary.challenge(word) //as Word object
-	////or/////
-	//dictionary.challenge(Board.getWord()) //last round's word stored in board as temWord var on top of board class
-        }
-
-
-
-else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
+            //if(scrabble.getBoard().isFirstPlay())
+            //printChallengeFirstWordError();
+            //else
+            //dictionary.challenge(word) //as Word object
+            ////or/////
+            //dictionary.challenge(Board.getWord()) //last round's word stored in board as temWord var on top of board class
+        } else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
             String[] parts = command.split("( )+");
             String uname = parts[1];
-            if (uname.length()>0)
-		currentPlayer.setName(uname);
-            }
-
-
- else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
+            if (uname.length() > 0)
+                currentPlayer.setName(uname);
+        } else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
-            if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(),word)) {
+            if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(), word)) {
                 printPlayError(scrabble.getBoard().getErrorCode());
             } else {
-                scrabble.getBoard().place(currentPlayer.getFrame(),word);
+                scrabble.getBoard().place(currentPlayer.getFrame(), word);
                 refreshBoard();
                 int points = scrabble.getBoard().getPoints();
                 printPoints(points);
@@ -186,10 +179,10 @@ else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.match
         } else if (!gameOver && (command.matches("EXCHANGE( )+([A-Z_]){1,7}") || command.matches("X( )+([A-Z_]){1,7}"))) {
             String[] parts = command.split("( )+");
             String letters = parts[1];
-            if (!currentPlayer.getFrame().isLegalExchange(scrabble.getPool(),letters)) {
+            if (!currentPlayer.getFrame().isLegalExchange(scrabble.getPool(), letters)) {
                 printExchangeError(currentPlayer.getFrame().getErrorCode());
             } else {
-                currentPlayer.getFrame().exchange(scrabble.getPool(),letters);
+                currentPlayer.getFrame().exchange(scrabble.getPool(), letters);
                 printTiles();
                 scrabble.zeroScorePlay();
                 if (scrabble.isZeroScorePlaysOverLimit()) {
@@ -215,7 +208,7 @@ else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.match
         String gridText = parts[0];
         int column = ((int) gridText.charAt(0)) - ((int) 'A');
         String rowText = parts[0].substring(1);
-        int row = Integer.parseInt(rowText)-1;
+        int row = Integer.parseInt(rowText) - 1;
         String directionText = parts[1];
         boolean isHorizontal = directionText.equals("A");
         String letters = parts[2];
@@ -288,21 +281,18 @@ else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.match
             case Board.WORD_EXCLUDES_LETTERS:
                 message = "Error: The word places excludes letters already on the board";
                 break;
-	    case Board.WORD_ONE_LETTER_LENGTH:
-		message = "Error: The word places excludes letters already on the board";
+            case Board.WORD_ONE_LETTER_LENGTH:
+                message = "Error: The word places excludes letters already on the board";
                 break;
         }
         printLine(message);
     }
 
 
-public void printChallengeFirstWordError(){
-String message = "";
- message = "Error: You're challenging opponent's word, but he hadn't put any words on board yet.";
-                break;
-        }
-        printLine(message);
-
+    public void printChallengeFirstWordError() {
+        String message = "";
+        message = "Error: You're challenging opponent's word, but he hadn't put any words on board yet.";
+    printLine(message);
 }
 
     public void printExchangeError (int errCode) {
@@ -357,5 +347,3 @@ String message = "";
         printLine("GAME OVER");
     }
 }
-
-

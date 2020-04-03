@@ -120,4 +120,3 @@ public class Dictionary
         dick.dictionarysearch("");
     }
 }
-
