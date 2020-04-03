@@ -27,16 +27,25 @@ public class Frame {
 
 	public boolean isAvailable(String letters) {
 		boolean found = true;
+		int countBlank = 0;
 		if (letters.length() > this.size()) {
 			found = false;
 		}
 		else {
+
 			ArrayList<Tile> copyTiles = new ArrayList<>(frame);
+			for (int i=0; i<copyTiles.size(); i++)
+				if(copyTiles.get(i).blank())
+					countBlank++; //how many blanks we have
 			for (int i=0; i<letters.length() && found; i++) {
 				Tile tileSought = new Tile(letters.charAt(i));
 				if (copyTiles.contains(tileSought)) {
 					copyTiles.remove(tileSought);
 				}
+				
+				else if (countBlank>0) {
+				countBlank--; //blank will replace missing letter
+}
 				else {
 					found = false;
 				}

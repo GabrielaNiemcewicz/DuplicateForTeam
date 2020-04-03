@@ -52,4 +52,13 @@ public class Tile {
         }
     }
 
+	public setBlankAs(char missingLetter){
+	if (this.blank)
+		{ //precondition: missing letter is uppercase
+            	this.letter = letter;
+            	this.value = TILE_VALUE[(int) letter - (int) 'A'];}
+
+}
+
+
 }
