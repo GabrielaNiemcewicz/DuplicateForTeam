@@ -147,7 +147,16 @@ public class UserInterface {
             printScores();
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
             printPoolSize();
-        } else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
+        }
+else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
+            String[] parts = command.split("( )+");
+            String uname = parts[1];
+            if (uname.length()>0)
+		currentPlayer.setName(uname);
+            }
+
+
+ else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
             if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(),word)) {
                 printPlayError(scrabble.getBoard().getErrorCode());
