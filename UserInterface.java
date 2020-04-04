@@ -148,12 +148,10 @@ public class UserInterface {
         } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
             printPoolSize();
         } else if (!gameOver && (command.equals("CHALLENGE") || command.equals("C"))) {
-            //if(scrabble.getBoard().isFirstPlay())
-            //printChallengeFirstWordError();
-            //else
-            //dictionary.challenge(word) //as Word object
-            ////or/////
-            //dictionary.challenge(Board.getWord()) //last round's word stored in board as temWord var on top of board class
+            // if(dictionary.challengedToRemove(scrabble.getBoard().lastWord) //as Word object, add encapsulation (getter) 
+            //board.challenge() //last round's word stored in board as temWord var on top of board class
+	    //else //if it's a correct word
+	    //printLine("Challenged word  "+board.lastWord+"exists in SOPOWDS dictionary")
         } else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
             String[] parts = command.split("( )+");
             String uname = parts[1];
