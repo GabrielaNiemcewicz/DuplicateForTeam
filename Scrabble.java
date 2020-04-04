@@ -9,11 +9,16 @@ public class Scrabble {
     private Pool pool;
     private Dictionary dictionary;
     private ArrayList<Player> players;
+
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
     private int currentPlayerId;
     private int numZeroScorePlays;
 
     Scrabble() {
-        dictionary = new Dictionary();
+       dictionary = new Dictionary();
         board = new Board();
         pool = new Pool();
         players = new ArrayList<>();
@@ -65,6 +70,12 @@ public class Scrabble {
 
     public void scorePlay() {
         numZeroScorePlays = 0;
+    }
+
+    public void notInDictionary(UserInterface ui, Board board)
+    {
+        String soughtWord = board.lastWord.getLetters();
+        dictionary.contain(ui, board);
     }
 
     public boolean isZeroScorePlaysOverLimit() {

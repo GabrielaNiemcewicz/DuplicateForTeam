@@ -5,6 +5,7 @@ public class Board {
     public static final int BOARD_SIZE = 15;
     public static final int BOARD_CENTRE = 7;
     private static int BONUS = 50;
+    private boolean isBoardEmpty = true;
 
     public static final int WORD_INCORRECT_FIRST_PLAY = 0;
     public static final int WORD_OUT_OF_BOUNDS = 1;
@@ -67,13 +68,31 @@ public class Board {
 
 
     public boolean isFirstPlay(){
-        return numPlays<2?true:false; //first play for first player is 0, for second player- 1.
+        return numPlays<1?true:false; //first play for first player is 0, for second player- 1.
+    }
+    private void set_IsBoardEmptyToFalse(){
+        this.isBoardEmpty = false;
+    }
+
+    public boolean isFirstPlacement(){
+        if (this.isBoardEmpty==true) {
+            for (int i=0; i<this.BOARD_SIZE; i++)
+                for (int j=0; j<this.BOARD_SIZE; j++)
+                    if (this.squares[i][j].isOccupied())
+                    {this.set_IsBoardEmptyToFalse();
+                        /*return false;*/}
+
+
+            /*return true;*/ }
+        return this.isBoardEmpty;
+
+
     }
 
     public boolean isLegalPlay(Frame frame, Word word) {
         boolean isLegal = true;
         //check for invalid first play
-        if (numPlays == 0 &&
+        if (this.isFirstPlacement() &&
                 ((word.isHorizontal() && (word.getRow()!=BOARD_CENTRE || word.getFirstColumn()>BOARD_CENTRE ||
                         word.getLastColumn()<BOARD_CENTRE)) ||
                         (word.isVertical() && (word.getColumn()!=BOARD_CENTRE || word.getFirstRow()>BOARD_CENTRE ||
@@ -123,7 +142,7 @@ public class Board {
             errorCode = WORD_LETTER_NOT_IN_FRAME;
         }
         // check that the letters placed connect with the letters on the board
-        if (isLegal && numPlays>0) {
+        if (isLegal && (!this.isFirstPlacement())) {
             int boxTop = Math.max(word.getFirstRow()-1,0);
             int boxBottom = Math.min(word.getLastRow()+1, BOARD_SIZE-1);
             int boxLeft = Math.max(word.getFirstColumn()-1,0);
@@ -142,7 +161,7 @@ public class Board {
             }
         }
         // check there are no tiles before the word
-        if (isLegal && numPlays>0) {
+        if (isLegal &&(!this.isFirstPlacement())) {
             if ( (word.isHorizontal() && word.getFirstColumn()>0 &&
                     squares[word.getRow()][word.getFirstColumn()-1].isOccupied()) ||
                     (word.isHorizontal() && word.getLastColumn()<BOARD_SIZE-1 &&
@@ -216,25 +235,26 @@ public class Board {
     }
 
     //precondition: challenge was successful
-    public void removeChallenged(Pool pool, Player otherPlayer) { //other player than current one
-        int r = this.lastWord.getFirstRow();
-        int c = this.lastWord.getFirstColumn();
-        int incorrectWordScore;
-        for (int i = 0; i < lastWord.getLength(); i++) {
-            if (!this.lastWord.occupiedBeforePlacement(i)) {//to not cause holes in previous words
-                squares[r][c].removeTile(pool);
+    public void removeChallenged(Pool pool, Player otherPlayer)
+    { //other player than current one
+        if(this.lastWord!=null)
+        {
+            int r = this.lastWord.getFirstRow();
+            int c = this.lastWord.getFirstColumn();
+            int incorrectWordScore;
+            for (int i = 0; i < lastWord.getLength(); i++) {
+                if (!this.lastWord.occupiedBeforePlacement(i)) {//to not cause holes in previous words
+                    squares[r][c].removeTile(pool);
 
+                }
+                if (this.lastWord.isHorizontal()) {
+                    c++;
+                } else {
+                    r++;
+                }
             }
-            if (this.lastWord.isHorizontal()) {
-                c++;
-            } else {
-                r++;
-            }
-        }
-        incorrectWordScore = this.lastWord.getScore();
-        otherPlayer.substractPoints(incorrectWordScore);
-        this.lastWord = null; //check if that works, if not,do at least: this.lastWord.saveScore(0);
-    }
-
+            incorrectWordScore = this.lastWord.getScore();
+            otherPlayer.substractPoints(incorrectWordScore);
+            this.lastWord = null; //check if that works, if not,do at least: this.lastWord.saveScore(0);
+        } }
 }
-

@@ -1,15 +1,16 @@
+import java.security.interfaces.RSAMultiPrimePrivateCrtKey;
 import java.util.ArrayList;
 
 public class Square {
 
     private int letterMuliplier;
     private int wordMultiplier;
-   // private boolean isOccupied;
+    // private boolean isOccupied;
     private Tile tile;
     private Tile abstractEmptyTile;
 
     Square(int letterMultiplier, int wordMultiplier) {
-      //  isOccupied = false;
+        //  isOccupied = false;
         this.letterMuliplier = letterMultiplier;
         this.wordMultiplier = wordMultiplier;
     }
@@ -39,11 +40,12 @@ public class Square {
     }
 
     public void add(Tile tile) {
-       // isOccupied = true;
+        // isOccupied = true;
         this.tile = tile;
     }
+
     public boolean isOccupied() {
-        return  this.tile == null ? false : true;
+        return this.tile == null ? false : true;
         //   return isOccupied;
     }
 
@@ -60,8 +62,17 @@ public class Square {
 
     }
 
-    public static void main(String[] args) {
-     /*  Square square = new Square(1,2);
+    public static void main(String[] args) {/*
+        Scrabble scrabble = new Scrabble();
+        String cat = "cat";
+        Dictionary dict = scrabble.getDictionary();
+       // boolean match = dict.contain("cat");
+        if (match==true)
+            System.out.println("Cat is in dictionary");
+        else
+            System.out.println("Error");
+
+        /*    Square square = new Square(1,2);
         Tile a = new Tile('A');
         Tile blan = new Tile('_');
         Pool pool = new Pool();
@@ -97,7 +108,7 @@ public class Square {
         if(!challengedAndRemoved.isOccupied())
             System.out.println("challengedAndRemoved");
         a.setBlankAs('W');
-        System.out.println(a.getLetter()+"  "+ a.getValue()+"   "+a.isBlank());*/
+        System.out.println(a.getLetter()+"  "+ a.getValue()+"   "+a.isBlank());
      Scrabble scrabble = new Scrabble();
     Player curplayer= scrabble.getPlayers().get(0);
     Player othplayer= scrabble.getPlayers().get(1);
@@ -107,6 +118,41 @@ public class Square {
      scrabble.getOtherPlayer().setName("coineoor");
      scrabble.getCurrentPlayer().setName("abudgkldnvik");
 
-        System.out.println(curplayer.getName() +"  +  "+ othplayer.getName());
+      System.out.println(curplayer.getName() +"  +  "+ othplayer.getName());
+        Tile a = new Tile ('A');
+        Tile b = new Tile ('B');
+        Tile c = new Tile ('C');
+        Tile d = new Tile ('D');
+        Tile f = new Tile ('F');
+        Tile blank1 = new Tile ('_');
+        Tile blank2 = new Tile ('_');
+        //blank2.setBlankAs('B');
+        Frame frame = new Frame ();
+        frame.add(blank1,blank2);
+        frame.add(f,d);
+        ArrayList<Tile>tiles = new ArrayList<Tile>();
+        tiles.add(blank1);
+        tiles.add(blank2);
+        //tiles.addAll(frame.getTiles("DF"));
+        //tiles.remove(0);
+        //tiles.remove(1);
+        //System.out.println(frame.toString());
+        //frame.removeTiles(tiles);
+        //System.out.println("");
+        //System.out.println(frame.toString());
+        //System.out.println(blank2.getLetter()+"   "+blank2.toString());
+        Tile storedT = frame.getTiles("ZFZ").get(0);
+        Tile storedT2 = frame.getTiles("ZFZ").get(1);
+        Tile storedT3 = frame.getTiles("ZFZ").get(2);
+        System.out.println(storedT.toString());
+        System.out.println(storedT2.toString());
+        System.out.println(storedT3.toString());
+        //System.out.println(frame.toString());
+        //
+        //System.out.println(frame.toString());
+    }
+
+*/
+
     }
 }

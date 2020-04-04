@@ -3,12 +3,18 @@ import java.util.*;
 
 public class Dictionary
 {
-    //Set<String> dictionary = new HashSet<>();
-	//Can this be removed^
-	
+    Set<String> dictionary = new HashSet<>();
     public ArrayList<String> dictionar = new ArrayList<String>();
     int [] bookmarks = new int [27];//26 letters and 1 blank
-    boolean match = false;
+    boolean match;
+
+    public Dictionary(){
+        dictionary = new HashSet<>();
+        dictionar = new ArrayList<String>();
+        bookmarks = new int [27];//26 letters and 1 blank
+        match = false;
+    }
+
 
     public ArrayList<String> getDictionar()
     {
@@ -33,6 +39,8 @@ public class Dictionary
             String currentline;
             File file = new File("sowpods.txt");
             BufferedReader sin = new BufferedReader(new FileReader(file));
+            if(!file.exists())
+                System.out.println("file doesn't exist");
             while ((currentline = sin.readLine()) != null)
             {
                 dictionar.add(currentline);
@@ -57,34 +65,28 @@ public class Dictionary
             }
         }
     }
-    
-    
-    //Can this be deleted
+
     public Set<String> getDictionary()
     {
         return dictionary;
     }
-    
-    
-    //This retuurns the wrong thing
-    //So can this be deleted or updated
-    public boolean contain(String words) {
-        return dictionary.contains(words);
+
+    public void contain( UserInterface ui,Board board)
+    {
+        String word = board.lastWord.getLetters();
+       ui.notInDictionary= dictionar.contains(word);
     }
-    
     //I'm still waiting for my phone to charge
-    public void dictionarysearch(String soughtWord)
+    public boolean dictionarysearch(String soughtWord)
     {
         for (int i = 0; i<dictionar.size(); i++) //that's simpler, linear search for now- but on ArrayList
             if(dictionar.get(i).equalsIgnoreCase(soughtWord)) //that's method where we can put any kind of search algorithm
-            {	
-            	//The return keyword should be here I think to exit the dictionary search after a word is found
-                match = true;
-                System.out.println(soughtWord);
+            {
+                return true;
+               // System.out.println(soughtWord);
             }
-
+        return false;
     }
-
     public boolean wasFound ()
     {
         return match;
@@ -94,10 +96,12 @@ public class Dictionary
         this.dictionarysearch(soughtWord);
         return match ? false:true;
     }
-    /*public static void main (String[]args)
+    public static void main (String[]args)
     {
         Dictionary  dick = new Dictionary();
         dick.readToArrayList();
-        dick.dictionarysearch("fuck");
-    }*/
+        //dick.dictionarysearch("witc"); is your phone on just starting to charge enough now
+        if(dick.challengedToRemove("dog")==false)
+            System.out.println(" dog is word, valid  word, not challenge edto remove, and should stay");
+    }
 }

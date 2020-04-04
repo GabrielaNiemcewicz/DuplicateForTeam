@@ -82,9 +82,21 @@ public class Frame {
     }
 
     // getTile precondition: isAvailable(letters) is true
+    //change: if not available, return null -new precondition : has enough blanks
     public Tile getTile(Character letter) {
-        int index = frame.indexOf(new Tile(letter));
-        return frame.get(index);
+        int index;
+        Tile returnedTile;
+        if(isAvailable(letter)) {
+            index = frame.indexOf(new Tile(letter));
+            returnedTile = frame.get(index);
+        }
+        else //if we want to return blank instead of unavailable letter
+        {
+            index = frame.indexOf(new Tile('_'));
+            returnedTile = frame.get(index);
+            returnedTile.setBlankAs(letter);
+        }
+        return returnedTile;
     }
 
     // remove precondition: isAvailable(letters) is true
@@ -94,8 +106,8 @@ public class Frame {
         for (int i=0; i<letters.length(); i++) {
             tempTile = this.getTile(letters.charAt(i));
 
-            if(tempTile.isBlank())
-                tempTile.setBlankAs(letters.charAt(i));
+           /* if(tempTile.isBlank())
+                tempTile.setBlankAs(letters.charAt(i));*/
 
             tiles.add(tempTile);
 

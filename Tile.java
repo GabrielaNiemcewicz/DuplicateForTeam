@@ -45,7 +45,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        if (blank) {
+        if (blank &&this.letter=='_') {
             return "_";
         } else {
             return Character.toString(letter);

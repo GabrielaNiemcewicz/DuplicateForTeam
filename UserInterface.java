@@ -19,6 +19,7 @@ public class UserInterface {
     Button[][] displaySquares = new Button[Board.BOARD_SIZE][Board.BOARD_SIZE];
     Scrabble scrabble;
     boolean gameOver;
+    boolean notInDictionary;
 
     UserInterface() {
         scrabble = new Scrabble();
@@ -150,12 +151,19 @@ public class UserInterface {
         } else if (!gameOver && (command.equals("CHALLENGE")||command.equals("C")))
         {// if(dictionary.challengedToRemove(scrabble.getBoard().lastWord) //as Word object, add encapsulation (getter)
             if (scrabble.getBoard().challengeLegal())
-            { scrabble.challenge();
-          refreshBoard();}
-            else {
-                scrabble.getBoard().challengeErrorAssinger();
-                printPlayError(scrabble.getBoard().getErrorCode());
-            }
+                if(scrabble.getDictionary().challengedToRemove(scrabble.getBoard().lastWord.getLetters()))
+                {
+                    scrabble.challenge();
+                    refreshBoard();
+                    refreshBoard();
+                }
+            else
+                {
+            printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOwPOWDS dictionary");
+            }//I'LL CHECK WHAT'S WITH THE LOGIC
+           else {
+            scrabble.getBoard().challengeErrorAssinger();
+            printPlayError(scrabble.getBoard().getErrorCode());}
             //  scrabble.getBoard().removeChallenged(scrabble.getPool(),scrabble.getOtherPlayer()); //last round's word stored in board as temWord var on top of board class
             //else //if it's a correct word
            // printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOPOWDS dictionary");
