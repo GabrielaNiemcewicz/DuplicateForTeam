@@ -3,7 +3,9 @@ import java.util.*;
 
 public class Dictionary
 {
-    Set<String> dictionary = new HashSet<>();
+    //Set<String> dictionary = new HashSet<>();
+	//Can this be removed^
+	
     public ArrayList<String> dictionar = new ArrayList<String>();
     int [] bookmarks = new int [27];//26 letters and 1 blank
     boolean match = false;
@@ -29,7 +31,7 @@ public class Dictionary
         try
         {
             String currentline;
-            File file = new File("C:\\Users\\Admin\\Desktop\\Applications\\sowpods.txt");
+            File file = new File("sowpods.txt");
             BufferedReader sin = new BufferedReader(new FileReader(file));
             while ((currentline = sin.readLine()) != null)
             {
@@ -55,21 +57,28 @@ public class Dictionary
             }
         }
     }
-
+    
+    
+    //Can this be deleted
     public Set<String> getDictionary()
     {
         return dictionary;
     }
-
+    
+    
+    //This retuurns the wrong thing
+    //So can this be deleted or updated
     public boolean contain(String words) {
         return dictionary.contains(words);
     }
+    
     //I'm still waiting for my phone to charge
     public void dictionarysearch(String soughtWord)
     {
         for (int i = 0; i<dictionar.size(); i++) //that's simpler, linear search for now- but on ArrayList
             if(dictionar.get(i).equalsIgnoreCase(soughtWord)) //that's method where we can put any kind of search algorithm
-            {
+            {	
+            	//The return keyword should be here I think to exit the dictionary search after a word is found
                 match = true;
                 System.out.println(soughtWord);
             }
