@@ -7,11 +7,13 @@ public class Scrabble {
 
     private Board board;
     private Pool pool;
+    private Dictionary dictionary;
     private ArrayList<Player> players;
     private int currentPlayerId;
     private int numZeroScorePlays;
 
     Scrabble() {
+        dictionary = new Dictionary();
         board = new Board();
         pool = new Pool();
         players = new ArrayList<>();
@@ -25,7 +27,8 @@ public class Scrabble {
         numZeroScorePlays = 0;
     }
 
-    public Player getCurrentPlayer() {
+    public Player getCurrentPlayer()
+    {
         return players.get(currentPlayerId);
     }
 
@@ -48,7 +51,14 @@ public class Scrabble {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+    public Player getOtherPlayer() {
+        return players.get((currentPlayerId+1)%2);
+    }
 
+    public void challenge() {
+
+       board.removeChallenged(getPool(),this.getOtherPlayer());
+    }
     public void zeroScorePlay() {
         numZeroScorePlays++;
     }

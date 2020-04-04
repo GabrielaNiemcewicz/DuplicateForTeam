@@ -61,7 +61,7 @@ public class Square {
     }
 
     public static void main(String[] args) {
-       Square square = new Square(1,2);
+     /*  Square square = new Square(1,2);
         Tile a = new Tile('A');
         Tile blan = new Tile('_');
         Pool pool = new Pool();
@@ -97,6 +97,16 @@ public class Square {
         if(!challengedAndRemoved.isOccupied())
             System.out.println("challengedAndRemoved");
         a.setBlankAs('W');
-        System.out.println(a.getLetter()+"  "+ a.getValue()+"   "+a.isBlank());
+        System.out.println(a.getLetter()+"  "+ a.getValue()+"   "+a.isBlank());*/
+     Scrabble scrabble = new Scrabble();
+    Player curplayer= scrabble.getPlayers().get(0);
+    Player othplayer= scrabble.getPlayers().get(1);
+        System.out.println(curplayer.getName());
+    scrabble.turnOver();
+    scrabble.turnOver();
+     scrabble.getOtherPlayer().setName("coineoor");
+     scrabble.getCurrentPlayer().setName("abudgkldnvik");
+
+        System.out.println(curplayer.getName() +"  +  "+ othplayer.getName());
     }
 }

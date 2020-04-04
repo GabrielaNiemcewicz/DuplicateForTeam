@@ -141,17 +141,24 @@ public class UserInterface {
             } else {
                 scrabble.turnOver();
             }
-        } else if (!gameOver && (command.equals("HELP") || command.equals("H"))) {
+        } else if (!gameOver && (command.equals("HELP")||command.equals("H"))) {
             printHelp();
-        } else if (!gameOver && (command.equals("SCORE") || command.equals("S"))) {
+        } else if (!gameOver && (command.equals("SCORE")||command.equals("S"))) {
             printScores();
-        } else if (!gameOver && (command.equals("POOL") || command.equals("O"))) {
+        } else if (!gameOver && (command.equals("POOL")||command.equals("O"))) {
             printPoolSize();
-        } else if (!gameOver && (command.equals("CHALLENGE") || command.equals("C"))) {
-            // if(dictionary.challengedToRemove(scrabble.getBoard().lastWord) //as Word object, add encapsulation (getter) 
-            //board.challenge() //last round's word stored in board as temWord var on top of board class
-	    //else //if it's a correct word
-	    //printLine("Challenged word  "+board.lastWord+"exists in SOPOWDS dictionary")
+        } else if (!gameOver && (command.equals("CHALLENGE")||command.equals("C")))
+        {// if(dictionary.challengedToRemove(scrabble.getBoard().lastWord) //as Word object, add encapsulation (getter)
+            if (scrabble.getBoard().challengeLegal())
+            { scrabble.challenge();
+          refreshBoard();}
+            else {
+                scrabble.getBoard().challengeErrorAssinger();
+                printPlayError(scrabble.getBoard().getErrorCode());
+            }
+            //  scrabble.getBoard().removeChallenged(scrabble.getPool(),scrabble.getOtherPlayer()); //last round's word stored in board as temWord var on top of board class
+            //else //if it's a correct word
+           // printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOPOWDS dictionary");
         } else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
             String[] parts = command.split("( )+");
             String uname = parts[1];
@@ -228,7 +235,7 @@ public class UserInterface {
     }
 
     private void printTiles() {
-        printLine(scrabble.getCurrentPlayer() + " has the following tiles:");
+        printLine(scrabble.getCurrentPlayer().getName() + " has the following tiles:");
         for (Tile tile : scrabble.getCurrentPlayer().getFrame().getTiles()) {
             print(tile + " ");
         }
@@ -236,7 +243,7 @@ public class UserInterface {
     }
 
     private void printPrompt() {
-        printLine(scrabble.getCurrentPlayer() + "'s turn:");
+        printLine(scrabble.getCurrentPlayer().getName() + "'s turn:");
         printTiles();
     }
 
@@ -277,11 +284,13 @@ public class UserInterface {
                 message = "Error: The first word must be in the centre of the board.";
                 break;
             case Board.WORD_EXCLUDES_LETTERS:
-                message = "Error: The word places excludes letters already on the board";
+                message = "Error: there are tiles excluded";
                 break;
             case Board.WORD_ONE_LETTER_LENGTH:
-                message = "Error: The word places excludes letters already on the board";
+                message = "Error: your full word is too short- it has to have at least 2 letters";
                 break;
+                case Board.CHALLENGED_BEFORE_FIRST_ROUND:
+                    message = "Error: you can't challenge your opponent's choice if he made no choice yet";
         }
         printLine(message);
     }
@@ -290,8 +299,8 @@ public class UserInterface {
     public void printChallengeFirstWordError() {
         String message = "";
         message = "Error: You're challenging opponent's word, but he hadn't put any words on board yet.";
-    printLine(message);
-}
+        printLine(message);
+    }
 
     public void printExchangeError (int errCode) {
         String message = "";
@@ -312,7 +321,7 @@ public class UserInterface {
 
     private void printScores() {
         for (Player player : scrabble.getPlayers()) {
-            printLine(player + " has " + player.getScore() + " points.");
+            printLine(player.getName() + " has " + player.getScore() + " points.");
         }
     }
 
@@ -332,11 +341,11 @@ public class UserInterface {
             }
         }
         if (!draw) {
-            printLine(winners.get(0) + " wins!");
+            printLine(winners.get(0).getName() + " wins!");
         } else {
             printLine("The following players draw!");
             for (Player winner : winners) {
-                printLine(winner + "");
+                printLine(winner.getName() + "");
             }
         }
     }

@@ -9,7 +9,7 @@ public class Player {
 
     Player(int id)  {
         this.id = id;
-        name = "";
+        name = "player"+id;
         score = 0;
         frame = new Frame();
     }

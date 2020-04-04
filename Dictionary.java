@@ -29,10 +29,8 @@ public class Dictionary
         try
         {
             String currentline;
-            System.out.println("ji");
-            File file = new File("sowpods.txt");
+            File file = new File("C:\\Users\\Admin\\Desktop\\Applications\\sowpods.txt");
             BufferedReader sin = new BufferedReader(new FileReader(file));
-            System.out.println("hi");
             while ((currentline = sin.readLine()) != null)
             {
                 dictionar.add(currentline);
@@ -75,36 +73,7 @@ public class Dictionary
                 match = true;
                 System.out.println(soughtWord);
             }
-        /*BufferedReader objReader = null;
-        try
-        {
-            String currentline;
-            objReader = new BufferedReader(new FileReader("dictionary.txt"));
-            while ((currentline = objReader.readLine()) != null)
-            {
-                if (currentline == soughtWord)
-                    match=true;
-            }
 
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                if (objReader != null)
-                {
-                    objReader.close();
-                }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     public boolean wasFound ()
@@ -120,6 +89,6 @@ public class Dictionary
     {
         Dictionary  dick = new Dictionary();
         dick.readToArrayList();
-        dick.dictionarysearch("zzz");
+        dick.dictionarysearch("fuck");
     }*/
 }
