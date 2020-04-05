@@ -1,5 +1,7 @@
 import java.security.interfaces.RSAMultiPrimePrivateCrtKey;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Square {
 
@@ -38,23 +40,20 @@ public class Square {
     public boolean isTripleWord() {
         return wordMultiplier == 3;
     }
-
-
-    
     public int getPlacementScore(){
-	int score = 0;
-	if(this.isOcupied())	
-		score+= this.getletterMultiplier()*this.getTile().getValue();
-	return score;
-}
+        int score = 0;
+        if(this.isOccupied())
+            score+= this.letterMuliplier*this.getTile().getValue();
+        return score;
+    }
 
-	public int getValue(){
-	int score = 0;
-	if(this.isOcupied())	
-		score+= this.getTile().getValue();
-	return score;
+    public int getValue(){
+        int score = 0;
+        if(this.isOccupied())
+            score+= this.getTile().getValue();
+        return score;
 
-}
+    }
 
     public void add(Tile tile) {
         // isOccupied = true;
@@ -64,6 +63,21 @@ public class Square {
     public boolean isOccupied() {
         return this.tile == null ? false : true;
         //   return isOccupied;
+    }
+    public String toString() {
+        if(!this.isOccupied())
+            if(wordMultiplier==1&&letterMuliplier==1)
+                return "REG";
+        else if(wordMultiplier==2&&letterMuliplier==1)
+                return "2W";
+            else if(wordMultiplier==3&&letterMuliplier==1)
+                return "3W";
+            else if(wordMultiplier==1&&letterMuliplier==2)
+                return "2L";
+            else //if(wordMultiplier==1&&letterMuliplier==3)
+                return "2L";
+
+            return "" + tile.toString();
     }
 
     // getTile pre-condition: isOccupied must be true
@@ -79,8 +93,41 @@ public class Square {
 
     }
 
-    public static void main(String[] args) {/*
-        Scrabble scrabble = new Scrabble();
+    public static void main(String[] args) {
+       /* Pool pool = new Pool ();
+        Square basic = new Square(1,1);
+        Square dl = new Square (2,1);
+        Square tw = new Square (1,3);
+        Tile a = new Tile('A');
+        Tile b = new Tile('B');
+        Tile blank = new Tile('_');
+        Board board = new Board();
+
+    basic = tw;
+    Frame frame = new Frame();
+        System.out.println(basic.getPlacementScore());
+        basic.add(blank);
+        System.out.println(basic.getPlacementScore());
+        basic.removeTile(pool);
+        basic.add(b);
+        System.out.println(basic.getPlacementScore());
+      char userInput = ' ';
+      Scanner scanner = new Scanner(System.in);
+      Scanner choose
+      while(userInput!='q'){
+      userInput = scanner.next().charAt(0);
+      frame.add(a,b);
+      frame.add(b, blank);
+      if(frame.size()<5)
+          frame.add(a, blank);
+
+
+       board.display();
+      board.
+      */
+
+      }
+        /*Scrabble scrabble = new Scrabble();
         String cat = "cat";
         Dictionary dict = scrabble.getDictionary();
        // boolean match = dict.contain("cat");
@@ -165,8 +212,8 @@ public class Square {
         //System.out.println(frame.toString());
         //
         //System.out.println(frame.toString());
-    }
-*/
+    }*/
+
 
     }
 }
