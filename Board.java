@@ -224,8 +224,10 @@ public class Board {
 private int parallelScore(){
 Word word = this.lastWord; 
  String tempWord = ""; 
-  int r;
-   int c;
+ int newRowStart, newColumnStart; //needed extra storage to record info of created word
+//two vars for iterative squarewalkers 
+int r; 
+int c;
 
  
    for (int i= -1; i<2; i+=2) //up and down, left or right
@@ -240,12 +242,32 @@ Word word = this.lastWord;
    if(!squares[r][c].isOccupied()||word.occupiedBeforePlacement(j)) //empty squarewalker <=> no connection. If was occupied, connects normally, not parallely
          {if(word.isHorizontal()) c++;
          else r++;} //skip them
-   else while (squares[r][c].isOccupied()&&r>=0&&c>=0) //end search where Tiles 'don't touch', or we run out of Board
-   { //search back for beginning of parallel word (left or up)
+   else  while (squares[r][c].isOccupied()&&r>0&&c>0) //end search where Tiles 'don't touch', or we run out of Board
+   { //search back for beginning of parallel word (left or up- 90* from 1st word direction)
       if (word.isHorizontal()) r--;
-      else c--;
+      else c--;}
+//small adjustment, because after index 1 isOccupied, 0 is answer no matter if 0 occupied or empty, and that's incorrect
+if(!squares[r][c].isOccupied) //go back
+	if (word.isHorizontal()) r++;
+    	  else c++;}
+	
+//we're at the start position of parallel (uninstantiated) word now
+//so we can record (save, instantiate locally) where start positions of parallel word are
+	newRowStart = r;
+	newColumnStart c;
+//only string is missing- go down, concatenating adding letters
+   while (squares[r][c].isOccupied()&&r<14&&c<14) //end search where Tiles 'don't touch', or we run out of Board
+   { //search forward for end of parallel word (right or down- 270* from original word direction)
       tempWord += squares[r][c].getCharacter(); //slowly create a new word
+	if (word.isHorizontal()) r++;
+      else c++;
    }
+//small adjustment, because after index 13 isOccupied, 14 is answer no matter if 14 occupied or empty, and that's incorrect
+if(!squares[r][c].isOccupied) //go back
+	if (word.isHorizontal()) r--;
+    	  else c--;}
+
+//check what word is
    //create new word and count it's score
    int parallelScore = 0;
       parallelScore+=    this.returnScore(new Word(r,c,word.isHorizontal(), tempWord));
