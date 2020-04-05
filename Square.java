@@ -48,6 +48,14 @@ public class Square {
 	return score;
 }
 
+	public int getValue(){
+	int score = 0;
+	if(this.isOcupied())	
+		score+= this.getTile().getValue();
+	return score;
+
+}
+
     public void add(Tile tile) {
         // isOccupied = true;
         this.tile = tile;

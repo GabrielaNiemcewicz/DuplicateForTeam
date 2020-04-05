@@ -1,6 +1,7 @@
 public class Board {
 
     public Word lastWord;
+    public ArrayList<Word>parallelWords;
 
     public static final int BOARD_SIZE = 15;
     public static final int BOARD_CENTRE = 7;
@@ -64,6 +65,7 @@ public class Board {
         }
         numPlays = 0;
         points = 0;
+	parallelWords = new ArrayList<Word>(); //empty if not created
     }
 
 
@@ -221,10 +223,13 @@ public class Board {
         return points;
     }
 
-private int parallelScore(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////needs testing. urgently.
+private void parallelScore(){
 Word word = this.lastWord; 
  String tempWord = ""; 
  int newRowStart, newColumnStart; //needed extra storage to record info of created word
+Word oneOfParallels; //if more than one, assignment changes, it's returned to arrayList in Board or score is accessed, hence local storage
 int parallel score;
 
 //two vars for iterative squarewalkers 
@@ -232,14 +237,14 @@ int r;
 int c;
 
  
-   for (int i= -1; i<2; i+=2) //up and down, left or right
+   for (int i= -1; i<2; i+=2){ //up and down, left or right
 //on next run of loop, get r back to normal state, reset to beginning of word
    r =word.getRow();
     c = word.getColumn();
 //set squarewalkers _around_ the word, depending whether horizontal/vertical 
        if(word.isHorizontal()) r+=i;
          else c+=i; 
-      for(int j=0;j<word.getLength(); j++) //for each square in line with word walk on squares
+      for(int j=0;j<word.getLength(); j++) {//for each square in line with word walk on squares
 
    if(!squares[r][c].isOccupied()||word.occupiedBeforePlacement(j)) //empty squarewalker <=> no connection. If was occupied, connects normally, not parallely
          {if(word.isHorizontal()) c++;
@@ -275,11 +280,18 @@ if(squares[r][c].isOccupied) //go further, check is priority
 	
 
 //check what word is
-   //create new perpendicular word and count it's score
+   //create new perpendicular word and count its score
     parallelScore = 0;
-      parallelScore+=    this.returnScore(new Word(newRowStart, newColumnStart,word.isVertical(), tempWord));
-   return parallelScore;
-      //got at first index of new word
+    oneOfParallels = new Word(newRowStart, newColumnStart,word.isVertical(), tempWord);
+      parallelScore+=  this.returnScore(oneOfParallels);
+  	oneOfParallels.saveScore(parallelScore);
+this.parallelWords.add(oneOfParallels);
+this.points+=parallelScore;
+ 
+} //finish second for loop, cause both statements have same code 'coverage'
+}//finish first for loop that goes -1 or +1- cause we do all code (on conditions) for each square in squrewalkers around original word
+	
+    
 
 
 }
