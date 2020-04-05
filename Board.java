@@ -221,19 +221,27 @@ public class Board {
         return points;
     }
 
-rivate int parallelScore(Word word){
-   int r =word.getRow();
-   int c = word.getColumn();
+private int parallelScore(){
+Word word = this.lastWord; 
+ String tempWord = ""; 
+  int r;
+   int c;
 
-   String tempWord = "";
+ 
    for (int i= -1; i<2; i+=2) //up and down, left or right
-      for(int j=0;j<word.getLength(); j++)
+//on next run of loop, get r back to normal state, reset to beginning of word
+   r =word.getRow();
+    c = word.getColumn();
+//set squarewalkers _around_ the word, depending whether horizontal/vertical 
+       if(word.isHorizontal()) r+=i;
+         else c+=i; 
+      for(int j=0;j<word.getLength(); j++) //for each square in line with word walk on squares
 
-   if(squares[r][c].isEmpty())
+   if(!squares[r][c].isOccupied()||word.occupiedBeforePlacement(j)) //empty squarewalker <=> no connection. If was occupied, connects normally, not parallely
          {if(word.isHorizontal()) c++;
-         else r++;}
-   else while (!squares[r][c].isEmpty()&&r>=0&&c>=0) //find parallel
-   {
+         else r++;} //skip them
+   else while (squares[r][c].isOccupied()&&r>=0&&c>=0) //end search where Tiles 'don't touch', or we run out of Board
+   { //search back for beginning of parallel word (left or up)
       if (word.isHorizontal()) r--;
       else c--;
       tempWord += squares[r][c].getCharacter(); //slowly create a new word
