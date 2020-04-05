@@ -27,7 +27,8 @@ public class Pool {
         return pool.isEmpty();
     }
 
-    public ArrayList<Tile> drawTiles(int numRequested) {
+    public ArrayList<Tile> drawTiles(int numRequested)
+    {
         int numGiven;
         if (numRequested > pool.size()) {
             numGiven = pool.size();
@@ -43,14 +44,13 @@ public class Pool {
         }
         return draw;
     }
-
-    public void addTiles(ArrayList<Tile> tiles) {
+    public void addTiles(ArrayList<Tile> tiles)
+    {
         pool.addAll(tiles);
     }
-
     @Override
-    public String toString() {
+    public String toString()
+    {
         return pool.toString();
     }
-
 }

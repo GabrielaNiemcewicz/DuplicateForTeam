@@ -7,14 +7,20 @@ public class Dictionary
     public ArrayList<String> dictionar = new ArrayList<String>();
     int [] bookmarks = new int [27];//26 letters and 1 blank
     boolean match;
+    String soughtWord;
 
-    public Dictionary(){
+    public Dictionary()
+    {
         dictionary = new HashSet<>();
         dictionar = new ArrayList<String>();
         bookmarks = new int [27];//26 letters and 1 blank
         match = false;
-    }
 
+    }
+    void getWord(String soughtWord){
+        this.soughtWord = soughtWord;
+
+    }
 
     public ArrayList<String> getDictionar()
     {
@@ -29,6 +35,12 @@ public class Dictionary
             {bookmarks[bookIndex] = i+1;
                 bookIndex++;}
     }
+  /*  public boolean setInDictionary()
+    {
+        String soughtWord = board.lastWord.getLetters().toLowerCase();
+        boolean found = this.dictionary.contain(soughtWord);
+        return found;
+    }*/
 
 
     public void readToArrayList ()
@@ -71,10 +83,10 @@ public class Dictionary
         return dictionary;
     }
 
-    public void contain( UserInterface ui,Board board)
+    public boolean contain()
     {
-        String word = board.lastWord.getLetters();
-       ui.notInDictionary= dictionar.contains(word);
+        boolean isIn = dictionar.contains(this.soughtWord);
+       return isIn;
     }
     //I'm still waiting for my phone to charge
     public boolean dictionarysearch(String soughtWord)
@@ -91,17 +103,29 @@ public class Dictionary
     {
         return match;
     }
+
+
     public boolean challengedToRemove(String soughtWord)
     {
         this.dictionarysearch(soughtWord);
         return match ? false:true;
     }
-    public static void main (String[]args)
+   /* public static void main (String[]args)
     {
+        Board board = new Board();
+       Word big = new Word(8,8,true,"BIG");
+        System.out.println(big.getLetters()+"word before board letters");
+       board.lastWord = big;
+        System.out.println(board.lastWord.getLetters()+"word in board letters");
         Dictionary  dick = new Dictionary();
         dick.readToArrayList();
+        System.out.println(dick.dictionar.get(101)+"is part of dict");
         //dick.dictionarysearch("witc"); is your phone on just starting to charge enough now
-        if(dick.challengedToRemove("dog")==false)
-            System.out.println(" dog is word, valid  word, not challenge edto remove, and should stay");
-    }
+      //  if(dick.contain(board))
+            System.out.println(board.lastWord.getLetters()+ " is word, valid  word, not challenge edto remove, and should stay");
+    //    else
+            System.out.println(board.lastWord.getLetters()+"not word");
+        System.out.println(dick.dictionar.contains("big"));
+
+    }*/
 }

@@ -236,7 +236,7 @@ public class Board {
 
         //check of parallel word score needs to be added
         word.saveScore(points);
-        this.parallelScore();
+    //    this.parallelScore();
 
         this.lastWord = word; //for knowing which word opponent challenges
 
@@ -247,9 +247,19 @@ public class Board {
         return points;
     }
 
+    public boolean isInDic(Dictionary dictionary){
+        String last = this.lastWord.getLetters();
+        dictionary.getWord(last);
+        boolean isIn = dictionary.contain();
+        return isIn;
+
+
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////needs testing. urgently.
-    private void parallelScore() {
+  /*  private void parallelScore() {
         Word word = this.lastWord;
         String tempWord = "";
         int newRowStart, newColumnStart; //needed extra storage to record info of created word
@@ -323,7 +333,7 @@ public class Board {
         } //finish second for loop, cause both statements have same code 'coverage'
 
 }//finish first for loop that goes -1 or +1- cause we do all code (on conditions) for each square in squrewalkers around original word
-
+*/
 private int returnScore (Word word) {
     int firstPositionX = word.getRow();
     int firstPositionY = word.getColumn();
@@ -350,7 +360,7 @@ public Square getSquare(int row, int col) {
         }
 
 public boolean challengeLegal(){
-        if(this.isFirstPlacement()) //don't challenge when board is emptied, even if on first central word challenged but numlays>1
+        if(this.numPlays<1) //don't challenge when board is emptied, even if on first central word challenged but numlays>1
         return false;
         return true;
         }

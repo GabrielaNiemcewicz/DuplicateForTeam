@@ -9,8 +9,11 @@ public class Frame {
     private ArrayList<Tile> frame;
     int errorCode;
 
+
     Frame() {
         frame = new ArrayList<>();
+        frame.add(new Tile('_'));
+        frame.add(new Tile('_'));
     }
 
     public int size() {
@@ -187,17 +190,26 @@ public class Frame {
         return frame.toString();
     }
 
-    public void add (Tile tile, Tile tile2){
+    public void add (Tile tile/*, Tile tile2*/){
         frame.add(tile);
-        frame.add(tile2);
+        //frame.add(tile2);
     }
 
-   /* public static void main(String[] args) {
+    public static void main(String[] args)
+    {/*
         Frame frame = new Frame();
         Tile tile = new Tile('_');
-        Tile tile2 = new Tile ('A');
-        frame.add(tile,tile2);
+        Tile tile2 = new Tile ('_');
+        Tile a = new Tile('A');
+        frame.add(tile);
+        tile2.setBlankAs('r');
+        frame.add(tile2);
+        char u = '_';
+        String underscore= Character.toString(u);
+        System.out.println(underscore+"shoulkd be underscore");
+        System.out.println("Tiles "+tile.toString()+"and second assigned"+tile2.toString());
 
-
-    }*/
+        System.out.println(frame.toString());
+*/
+    }
 }

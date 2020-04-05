@@ -13,7 +13,7 @@ public class Scrabble {
     public Dictionary getDictionary() {
         return dictionary;
     }
-
+    public boolean inDictionary = true;
     private int currentPlayerId;
     private int numZeroScorePlays;
 
@@ -71,12 +71,13 @@ public class Scrabble {
     public void scorePlay() {
         numZeroScorePlays = 0;
     }
-
-    public void notInDictionary(UserInterface ui, Board board)
+//precondition: invoke if there is lastWord to be challenged
+ /*   public boolean setInDictionary()
     {
-        String soughtWord = board.lastWord.getLetters();
-        dictionary.contain(ui, board);
-    }
+        String soughtWord = board.lastWord.getLetters().toLowerCase();
+        boolean found = this.dictionary.contain();
+        return found;
+    }*/
 
     public boolean isZeroScorePlaysOverLimit() {
         return numZeroScorePlays >= ZERO_SCORE_PLAY_LIMIT;

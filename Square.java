@@ -92,9 +92,8 @@ public class Square {
         this.tile = null; //abstractEmptyTile;
 
     }
-
-    public static void main(String[] args) {
-       /* Pool pool = new Pool ();
+    /*public static void main(String[] args) {
+        Pool pool = new Pool ();
         Square basic = new Square(1,1);
         Square dl = new Square (2,1);
         Square tw = new Square (1,3);
@@ -120,22 +119,16 @@ public class Square {
       frame.add(b, blank);
       if(frame.size()<5)
           frame.add(a, blank);
-
-
        board.display();
       board.
-      */
-
       }
-        /*Scrabble scrabble = new Scrabble();
-        String cat = "cat";
-        Dictionary dict = scrabble.getDictionary();
+        Scrabble scrabble = new Scrabble();
        // boolean match = dict.contain("cat");
         if (match==true)
             System.out.println("Cat is in dictionary");
         else
             System.out.println("Error");
-        /*    Square square = new Square(1,2);
+        Square square = new Square(1,2);
         Tile a = new Tile('A');
         Tile blan = new Tile('_');
         Pool pool = new Pool();
@@ -216,4 +209,3 @@ public class Square {
 
 
     }
-}

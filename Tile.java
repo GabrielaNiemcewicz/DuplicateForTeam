@@ -17,7 +17,7 @@ public class Tile {
             this.letter = letter;
             this.value = TILE_VALUE[(int) letter - (int) 'A'];
         }
-    }
+        }
 
     public boolean isBlank() {
         return blank;
@@ -43,13 +43,21 @@ public class Tile {
         }
     }
 
-    @Override
+@Override
     public String toString() {
-        if (blank &&this.letter=='_') {
-            return "_";
-        } else {
+        char c = '-';
+        if (blank &&letter!='_')
+             return Character.toString(letter);
+
+         else if (blank)
+
+            return Character.toString('-');
+
+            else
+      // String string="";
+        //string = Character.toString(letter);
             return Character.toString(letter);
-        }
+
     }
 
     public void setBlankAs(char missingLetter) {
