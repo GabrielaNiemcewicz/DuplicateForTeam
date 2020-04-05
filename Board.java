@@ -225,6 +225,7 @@ private int parallelScore(){
 Word word = this.lastWord; 
  String tempWord = ""; 
  int newRowStart, newColumnStart; //needed extra storage to record info of created word
+int parallel score;
 //two vars for iterative squarewalkers 
 int r; 
 int c;
@@ -242,12 +243,13 @@ int c;
    if(!squares[r][c].isOccupied()||word.occupiedBeforePlacement(j)) //empty squarewalker <=> no connection. If was occupied, connects normally, not parallely
          {if(word.isHorizontal()) c++;
          else r++;} //skip them
-   else  while (squares[r][c].isOccupied()&&r>0&&c>0) //end search where Tiles 'don't touch', or we run out of Board
+   else  while (r>0&&c>0&&squares[r][c].isOccupied())//end search where Tiles 'don't touch', or we run out of Board
    { //search back for beginning of parallel word (left or up- 90* from 1st word direction)
       if (word.isHorizontal()) r--;
       else c--;}
-//small adjustment, because after index 1 isOccupied, 0 is answer no matter if 0 occupied or empty, and that's incorrect
-if(!squares[r][c].isOccupied) //go back
+ 
+//small adjustment, because after index n isOccupied, n-1 is answer no matter if n-1 occupied or empty, and that's incorrect
+if(!squares[r][c].isOccupied) //go back, check to be safe
 	if (word.isHorizontal()) r++;
     	  else c++;}
 	
@@ -256,20 +258,23 @@ if(!squares[r][c].isOccupied) //go back
 	newRowStart = r;
 	newColumnStart c;
 //only string is missing- go down, concatenating adding letters
-   while (squares[r][c].isOccupied()&&r<14&&c<14) //end search where Tiles 'don't touch', or we run out of Board
+   while (squares[r][c].isOccupied()&&r<13&&c<13) //end search where Tiles 'don't touch', or we run out of Board- last index tricky cause word creation, can't get away with unocupied tile
    { //search forward for end of parallel word (right or down- 270* from original word direction)
-      tempWord += squares[r][c].getCharacter(); //slowly create a new word
+      tempWord += squares[r][c].getTile().getCharacter(); //slowly create a new word
 	if (word.isHorizontal()) r++;
       else c++;
    }
-//small adjustment, because after index 13 isOccupied, 14 is answer no matter if 14 occupied or empty, and that's incorrect
-if(!squares[r][c].isOccupied) //go back
+//small adjustment, because after index n-1 isOccupied, n is answer no matter if n occupied or empty, and that's incorrect
+//so we stopped loop before last tile, and add letter to word only if occupied
+if(!squares[r][c].isOccupied) //go back, check not priority but to be safe
 	if (word.isHorizontal()) r--;
     	  else c--;}
+else //if has tile
+	tempWord += squares[r][c].getTile().getCharacter();
 
 //check what word is
    //create new word and count it's score
-   int parallelScore = 0;
+    parallelScore = 0;
       parallelScore+=    this.returnScore(new Word(r,c,word.isHorizontal(), tempWord));
    return parallelScore;
       //got at first index of new word
