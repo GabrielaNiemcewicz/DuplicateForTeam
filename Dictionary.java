@@ -43,7 +43,7 @@ public class Dictionary
     }*/
 
 
-    public void readToArrayList ()
+    public void readToArrayList (Scrabble scrabble)
     {
         BufferedReader objReader = null;
         try
@@ -55,7 +55,7 @@ public class Dictionary
                 System.out.println("file doesn't exist");
             while ((currentline = sin.readLine()) != null)
             {
-                dictionar.add(currentline);
+                scrabble.dictionar.add(currentline);
             }
         }
         catch (IOException e)

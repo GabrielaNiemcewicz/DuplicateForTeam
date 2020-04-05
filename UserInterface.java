@@ -9,7 +9,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class UserInterface {
 
@@ -20,8 +19,6 @@ public class UserInterface {
     Button[][] displaySquares = new Button[Board.BOARD_SIZE][Board.BOARD_SIZE];
     Scrabble scrabble;
     boolean gameOver;
-    boolean inDictionary = true;
-    Dictionary dictionary = new Dictionary();
 
     UserInterface() {
         scrabble = new Scrabble();
@@ -84,8 +81,7 @@ public class UserInterface {
         printPrompt();
     }
 
-    void refreshBoard()
-    {
+    void refreshBoard() {
         for (int r = 0; r < Board.BOARD_SIZE; r++) {
             for (int c = 0; c < Board.BOARD_SIZE; c++) {
                 displaySquare(r, c);
@@ -147,54 +143,32 @@ public class UserInterface {
             }
         } else if (!gameOver && (command.equals("HELP")||command.equals("H"))) {
             printHelp();
-        } else if (!gameOver && (command.equals("PWS")||command.equals("pws"))) {
-           int score = scrabble.getBoard().getPoints();
-            printLine("All words score should be:"+score);
-        }
-        else if (!gameOver && (command.equals("SCORE")||command.equals("S"))) {
+        } else if (!gameOver && (command.equals("SCORE")||command.equals("S"))) {
             printScores();
         } else if (!gameOver && (command.equals("POOL")||command.equals("O"))) {
             printPoolSize();
         } else if (!gameOver && (command.equals("CHALLENGE")||command.equals("C")))
-        {  //as Word object, add encapsulation (getter)
-            //this is where we check if it in the dict
-            dictionary.getWord(scrabble.getBoard().lastWord.getLetters().toLowerCase());
-            this.inDictionary = scrabble.getBoard().isInDic(dictionary); //dictionary.contain();//scrabble.setInDictionary();
+        {// if(dictionary.challengedToRemove(scrabble.getBoard().lastWord) //as Word object, add encapsulation (getter)
             if (scrabble.getBoard().challengeLegal())
-                if(this.inDictionary)
-                {
-                    printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOwPOWDS dictionary");
-
-                }
-            else
-                {
-                    scrabble.challenge();
-                    refreshBoard();
-                    printLine(" t or f"+ this.inDictionary);
-
-            }//I'LL CHECK WHAT'S WITH THE LOGIC
-           else {
-            scrabble.getBoard().challengeErrorAssinger();
-            printPlayError(scrabble.getBoard().getErrorCode());}
+            { scrabble.challenge();
+                refreshBoard();}
+            else {
+                scrabble.getBoard().challengeErrorAssinger();
+                printPlayError(scrabble.getBoard().getErrorCode());
+            }
             //  scrabble.getBoard().removeChallenged(scrabble.getPool(),scrabble.getOtherPlayer()); //last round's word stored in board as temWord var on top of board class
             //else //if it's a correct word
-           // printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOPOWDS dictionary");
-        } else if (!gameOver && (command.toUpperCase().matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}")))
-        {
+            // printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOPOWDS dictionary");
+        } else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
             String[] parts = command.split("( )+");
             String uname = parts[1];
             if (uname.length() > 0)
                 currentPlayer.setName(uname);
-        }
-        else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z]){1,15}") || (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}( )+([A-Z]){1,2}"))))
-        {
+        }else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z]){1,15}") || (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}( )+([A-Z]){1,2}")))){
             Word word = parsePlay(command);
-            if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(), word))
-            {
+            if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(), word)) {
                 printPlayError(scrabble.getBoard().getErrorCode());
-            }
-            else
-                {
+            } else {
                 scrabble.getBoard().place(currentPlayer.getFrame(), word);
                 refreshBoard();
                 int points = scrabble.getBoard().getPoints();
@@ -207,7 +181,6 @@ public class UserInterface {
                     gameOver = true;
                 }
             }
-
         } else if (!gameOver && (command.matches("EXCHANGE( )+([A-Z_]){1,7}") || command.matches("X( )+([A-Z_]){1,7}"))) {
             String[] parts = command.split("( )+");
             String letters = parts[1];
@@ -250,15 +223,15 @@ public class UserInterface {
         for (int i = 0; i<letters.length() ;i++) {
             if (letters.charAt(i) == '_'){
                 if(parts[3].length()>ite){
-                assignedChar = parts[3].charAt(ite);
+                    assignedChar = parts[3].charAt(ite);
 
-            newLetters+= assignedChar;
-            ite++;}
-            else //too many blanks when specified less letters
-                newLetters+="WRTGFHKV";
+                    newLetters+= assignedChar;
+                    ite++;}
+                else //too many blanks when specified less letters
+                    newLetters+="WRTGFHKV";
             }
             else
-            newLetters += letters.charAt(i);
+                newLetters += letters.charAt(i);
         }
         if(ite>0)
             printLine(ite+" blank accessed");
@@ -334,8 +307,8 @@ public class UserInterface {
             case Board.WORD_ONE_LETTER_LENGTH:
                 message = "Error: your full word is too short- it has to have at least 2 letters";
                 break;
-                case Board.CHALLENGED_BEFORE_FIRST_ROUND:
-                    message = "Error: you can't challenge your opponent's choice if he made no choice yet";
+            case Board.CHALLENGED_BEFORE_FIRST_ROUND:
+                message = "Error: you can't challenge your opponent's choice if he made no choice yet";
         }
         printLine(message);
     }

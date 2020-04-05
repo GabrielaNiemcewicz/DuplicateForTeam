@@ -9,6 +9,20 @@ public class Scrabble {
     private Pool pool;
     private Dictionary dictionary;
     private ArrayList<Player> players;
+   ArrayList<String> dictionar = new ArrayList<String>();
+
+
+   public boolean seek (String sought){
+
+       for (int i = 0; i<dictionar.size(); i++) //that's simpler, linear search for now- but on ArrayList
+           if(dictionar.get(i).equalsIgnoreCase(sought)) //that's method where we can put any kind of search algorithm
+           {
+               return true;
+               // System.out.println(soughtWord);
+           }
+       return false;
+
+   }
 
     public Dictionary getDictionary() {
         return dictionary;
@@ -72,12 +86,12 @@ public class Scrabble {
         numZeroScorePlays = 0;
     }
 //precondition: invoke if there is lastWord to be challenged
- /*   public boolean setInDictionary()
-    {
+    public boolean setInDictionary()
+    {   this.dictionary.readToArrayList();
         String soughtWord = board.lastWord.getLetters().toLowerCase();
         boolean found = this.dictionary.contain();
         return found;
-    }*/
+    }
 
     public boolean isZeroScorePlaysOverLimit() {
         return numZeroScorePlays >= ZERO_SCORE_PLAY_LIMIT;
