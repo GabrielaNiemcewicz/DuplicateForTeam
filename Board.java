@@ -221,6 +221,37 @@ public class Board {
         return points;
     }
 
+rivate int parallelScore(Word word){
+   int r =word.getRow();
+   int c = word.getColumn();
+
+   String tempWord = "";
+   for (int i= -1; i<2; i+=2) //up and down, left or right
+      for(int j=0;j<word.getLength(); j++)
+
+   if(squares[r][c].isEmpty())
+         {if(word.isHorizontal()) c++;
+         else r++;}
+   else while (!squares[r][c].isEmpty()&&r>=0&&c>=0) //find parallel
+   {
+      if (word.isHorizontal()) r--;
+      else c--;
+      tempWord += squares[r][c].getCharacter(); //slowly create a new word
+   }
+   //create new word and count it's score
+   int parallelScore = 0;
+      parallelScore+=    this.returnScore(new Word(r,c,word.isHorizontal(), tempWord));
+   return parallelScore;
+      //got at first index of new word
+
+
+
+
+
+}
+
+
+
     public Square getSquare(int row, int col) {
         return squares[row][col];
     }
