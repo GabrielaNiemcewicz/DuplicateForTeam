@@ -282,12 +282,29 @@ if(squares[r][c].isOccupied) //go further, check is priority
       //got at first index of new word
 
 
-
-
-
 }
 
+	private int returnScore (Word word)
+	{
+		int firstPositionX = word.getRow();
+		int firstPositionY = word.getColumn();
+		int wordMultiplier =1;
 
+		int score = 0;
+		if (word.isVertical()) { //vertical placement
+			for (int i = 0; i < word.getLength(); i++)
+				score += squares[firstPositionX][firstPositionY + i].getPlacementScore(); //add each multiplication letter score with tile score for word score
+				wordMultiplier *= squares[firstPositionX][firstPositionY + i].getWordMultiplier(); //multiply by word multipliers if there are any, otherwise by 1
+		
+		 	if (word.isHorizontal())  //horizontal placement
+				firstPositionY++;
+			else 
+				firstPositionY++;
+			
+		
+		return score*wordMultiplier;
+
+	}
 
     public Square getSquare(int row, int col) {
         return squares[row][col];

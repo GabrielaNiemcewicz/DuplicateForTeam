@@ -39,6 +39,15 @@ public class Square {
         return wordMultiplier == 3;
     }
 
+
+    
+    public int getPlacementScore(){
+	int score = 0;
+	if(this.isOcupied())	
+		score+= this.getletterMultiplier()*this.getTile().getValue();
+	return score;
+}
+
     public void add(Tile tile) {
         // isOccupied = true;
         this.tile = tile;
@@ -71,7 +80,6 @@ public class Square {
             System.out.println("Cat is in dictionary");
         else
             System.out.println("Error");
-
         /*    Square square = new Square(1,2);
         Tile a = new Tile('A');
         Tile blan = new Tile('_');
@@ -117,7 +125,6 @@ public class Square {
     scrabble.turnOver();
      scrabble.getOtherPlayer().setName("coineoor");
      scrabble.getCurrentPlayer().setName("abudgkldnvik");
-
       System.out.println(curplayer.getName() +"  +  "+ othplayer.getName());
         Tile a = new Tile ('A');
         Tile b = new Tile ('B');
@@ -151,7 +158,6 @@ public class Square {
         //
         //System.out.println(frame.toString());
     }
-
 */
 
     }
