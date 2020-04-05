@@ -226,6 +226,7 @@ Word word = this.lastWord;
  String tempWord = ""; 
  int newRowStart, newColumnStart; //needed extra storage to record info of created word
 int parallel score;
+
 //two vars for iterative squarewalkers 
 int r; 
 int c;
@@ -265,17 +266,18 @@ if(!squares[r][c].isOccupied) //go back, check to be safe
       else c++;
    }
 //small adjustment, because after index n-1 isOccupied, n is answer no matter if n occupied or empty, and that's incorrect
-//so we stopped loop before last tile, and add letter to word only if occupied
-if(!squares[r][c].isOccupied) //go back, check not priority but to be safe
+//so we stopped loop before last tile, and add letter to word only if last is occupied too- iterate there
 	if (word.isHorizontal()) r--;
     	  else c--;}
-else //if has tile
+if(squares[r][c].isOccupied) //go further, check is priority
 	tempWord += squares[r][c].getTile().getCharacter();
+//if empty, don't assign, do nothing
+	
 
 //check what word is
-   //create new word and count it's score
+   //create new perpendicular word and count it's score
     parallelScore = 0;
-      parallelScore+=    this.returnScore(new Word(r,c,word.isHorizontal(), tempWord));
+      parallelScore+=    this.returnScore(new Word(newRowStart, newColumnStart,word.isVertical(), tempWord));
    return parallelScore;
       //got at first index of new word
 
