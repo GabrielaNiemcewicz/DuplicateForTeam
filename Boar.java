@@ -100,7 +100,7 @@ public class Boar
             if(this.newRowStart<14)
             rwalker[1] = this.newRowStart+1; //DOWN
             else rwalker[1] = this.newRowStart-1;
-            System.out.println(rwalker[0]+" = up, lower, AND "+rwalker[1]+"down, higher");
+            System.out.println(rwalker[0] +" = up, lower, AND "+ rwalker[1] +"down, higher");
             //columns- mobile index
             BoxHorS = Math.max(0, c);
             BoxHorF = Math.min(c+size, 8);
@@ -121,10 +121,10 @@ public class Boar
         if(this.isHor)
           for(int i = BoxHorS; i<BoxHorF; i++) //testing code till now
             {
-                System.out.println(i + "is each row that word contains");
-        if(boar[i][this.newColumnStart]=='A'&&!((boar[i][rwalker[0]]=='_') && (boar[i][rwalker[1]]=='_'))) //if occ. square was existing connection, or *both* of two around are still empty
-        boar[i][this.newColumnStart] = 'N';}
-			  			    // else
+                System.out.println(boar[this.newRowStart][i] + "is each letter in first-placed word, AAAA, where NNAA is paralel info");
+        if(boar[this.newRowStart][i]=='A'&&!((boar[rwalker[0]][i]=='_') && (boar[rwalker[1]][i]=='_'))) //if occ. square was existing connection, or *both* of two around are still empty
+            boar[this.newRowStart][i] = 'N';}
+         			    // else
 			  				//	for(int i = BoxVerS; i<BoxVerF; i++) //testing code till now
 						      //  	for (int j=0; j<2; j++)
 
@@ -144,45 +144,22 @@ public class Boar
 			                else r++;
 			            } //skip them*/
 System.out.println("new column start"+this.newColumnStart+"  "+boar[BoxHorS][this.newColumnStart]);
-
+    }
+    public int findStartParallelWord(int rcontained, int ccontained)
+    {
+        return 0;
     }
 
 
-    public void findP() {
-        r = this.newRowStart;
-        c = this.newColumnStart;
-        int boxTop = Math.max(r-1,0);
-        int boxBottom = Math.min(r+word.length()-1, 9-1);
-        int boxLeft = Math.max(c+1,0);
-        int boxRight = Math.min(c+word.length()-1, 9-1);
-
-
-
-        char around = 'S';
-        for (int r=boxTop; r<=boxBottom; r++) {
-            for (int c=boxLeft; c<=boxRight; c++) {
-                if (boar[r][c]!='_') {
-                    boar[r][c] = around;
-                }
-            }
-
-
-        }
+    public int findEndParalllelWord ()
+    {
+        return 0;
     }
 
-
-    public int findStartParallelWord() {return 0;}
-
-
-    public int findEndParalllelWord () {return 0;}
-
-    public String buildParallelWord() {return "";}
-
-
-
-
-
-
+    public String buildParallelWord()
+    {
+        return "";
+    }
 
     public static void main(String[] args)
     {
