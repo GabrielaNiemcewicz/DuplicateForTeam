@@ -23,11 +23,11 @@ public class Boar
         //{
         // index = (int)( (Math.random()*3)-2);
         for(int j=2;j<5; j++)
-            boar[3][j] ='M';
+            boar[1][j] ='M';
         for(int j=3;j<4; j++)
-            boar[4][j] ='M';
+            boar[2][j] ='M';
         for(int j=1;j<5; j++)
-            boar[5][j] ='M';
+            boar[3][j] ='M';
         //}
 
 
@@ -106,7 +106,7 @@ public class Boar
             BoxHorF = Math.min(c+size, 8);
         }	else
          {//this is vertical
-        //column- constant index
+        //column- constant index //error
              if(this.newColumnStart>0)
                  cwalker[0] = this.newColumnStart-1; //UP
              else cwalker[0] =  this.newColumnStart+1;
@@ -121,6 +121,7 @@ public class Boar
         if(this.isHor)
           for(int i = BoxHorS; i<BoxHorF; i++) //testing code till now
             {
+                System.out.println(i + "is each row that word contains");
         if(boar[i][this.newColumnStart]=='A'&&!((boar[i][rwalker[0]]=='_') && (boar[i][rwalker[1]]=='_'))) //if occ. square was existing connection, or *both* of two around are still empty
         boar[i][this.newColumnStart] = 'N';}
 			  			    // else
@@ -142,7 +143,7 @@ public class Boar
 			                if (this.isHor) c++;
 			                else r++;
 			            } //skip them*/
-
+System.out.println("new column start"+this.newColumnStart+"  "+boar[BoxHorS][this.newColumnStart]);
 
     }
 
@@ -185,7 +186,7 @@ public class Boar
 
     public static void main(String[] args)
     {
-        Boar boar = new Boar("AAAA", 4,4);
+        Boar boar = new Boar("AAAA", 0,3);
         boar.place();
         boar.findsParallel();
         boar.display();
