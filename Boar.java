@@ -5,7 +5,7 @@ public class Boar {
     ///////////////////CLASS WORD
     String word; //was class word, needs more info
     int newRowStart, newColumnStart; //needed extra storage to record info of created word
-    boolean isHor = false;
+    boolean isHor;
     //Word oneOfParallels; //if more than one, assignment changes, it's returned to arrayList in Board or score is accessed, hence local storage
     int parallelScore;
     //////////////////////iterators, walkers
@@ -14,7 +14,7 @@ public class Boar {
 
     int size;
 
-    Boar(String word, int row, int col) {
+    Boar(String word, int row, int col, boolean isHor) {
         for (int i = 0; i < 9; i++)
             for (int j = 0; j < 9; j++)
                 boar[i][j] = '_';
@@ -37,6 +37,7 @@ public class Boar {
         this.newRowStart = row;
         this.newColumnStart = col;
         this.size = word.length();
+        this.isHor = isHor;
 
 
     }
@@ -173,19 +174,25 @@ public class Boar {
         //vertical:   row is mobile,   col is horizontal
         //parallel word transposes indices
         if (isHor) {
-            while (firstRow < 8 && boar[firstRow + 1][firstColumn] != '_') //while tiles 'touch' and we don't run out of board
+            while (firstRow < 8 && boar[firstRow][firstColumn] != '_') //while tiles 'touch' and we don't run out of board
             {
                 pWord += boar[firstRow][firstColumn];
                 firstRow++;
             }
+            if(firstRow<8)
+                firstRow--;
         } else //isVertical
         {
-            while (firstColumn > 0 && boar[firstRow][firstColumn + 1] != '_') //while tiles 'touch' and we don't run out of board
-            {
+            while (firstColumn < 8 && boar[firstRow][firstColumn] != '_') //while tiles 'touch' and we don't run out of board
+            {    pWord += boar[firstRow][firstColumn];
                 System.out.println(boar[firstRow][firstColumn]);
                 firstColumn++;
             }
+            if(firstColumn<8)
+                firstColumn--;
         }
+
+
         endPosPW[0] = firstRow;
         endPosPW[1] = firstColumn;
         System.out.println(endPosPW[0] + "   " + endPosPW[1]);
@@ -193,11 +200,11 @@ public class Boar {
     }
 
     public static void main(String[] args) {
-        Boar boar = new Boar("AAAA", 4, 5); //rows 3,5 eg.
+        Boar boar = new Boar("AAAA", 4, 5, false); //rows 3,5 eg.
         boar.place();
         boar.findsParallel();
         boar.findStartPW(4, 5);
-        boar.buildParallelWord(3, 2);
+        boar.buildParallelWord(4, 1);
         boar.display();
         // System.out.println(boar.newRowStart+1);
     }
