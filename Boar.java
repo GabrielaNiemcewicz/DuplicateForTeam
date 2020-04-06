@@ -22,12 +22,12 @@ public class Boar
         //	for (int i=2; i<6; i++)
         //{
         // index = (int)( (Math.random()*3)-2);
-        for(int j=2;j<5; j++)
+        for(int j=2;j<6; j++)
             boar[1][j] ='M';
-        for(int j=3;j<4; j++)
+        for(int j=3;j<7; j++)
             boar[2][j] ='M';
-        for(int j=1;j<5; j++)
-            boar[3][j] ='M';
+        for(int j=1;j<7; j++)
+            boar[0][j] ='M';
         //}
 
 
@@ -131,7 +131,35 @@ public class Boar
 
 
 
-						        	/*		        */ /*
+
+System.out.println("new column start"+this.newColumnStart+"  "+boar[BoxHorS][this.newColumnStart]);
+    }
+    //precindition: given indices locate a square that *IS* part of parallel word, but we don't know if it's first, second or which index
+    //so we look
+
+
+    public /*int[]*/ void findStartPW(int rcontained, int ccontained)
+    { //PW = parallel word
+        int[] startPosPW;
+        startPosPW = new int[]{rcontained, ccontained};
+        //horizontal: row is constant, col is mobile
+
+        while(rcontained>0&&boar[rcontained-1][ccontained]!='_') //while tiles 'touch' and we don't run out of board
+        rcontained--;
+        startPosPW[0] = rcontained;
+
+        System.out.println(startPosPW[0]+"   "+startPosPW[1]);
+    }
+
+
+    public int findEndParalllelWord ()
+    {
+        return 0;
+    }
+
+    public String buildParallelWord()
+    {
+        /*		        */ /*
 			        if (this.isHor) r += back;
 			        else c += back;
 			        for (int j = 0; j < word.length(); j++) {//for each square in line with word walk on squares
@@ -143,29 +171,15 @@ public class Boar
 			                if (this.isHor) c++;
 			                else r++;
 			            } //skip them*/
-System.out.println("new column start"+this.newColumnStart+"  "+boar[BoxHorS][this.newColumnStart]);
-    }
-    public int findStartParallelWord(int rcontained, int ccontained)
-    {
-        return 0;
-    }
-
-
-    public int findEndParalllelWord ()
-    {
-        return 0;
-    }
-
-    public String buildParallelWord()
-    {
         return "";
     }
 
     public static void main(String[] args)
     {
-        Boar boar = new Boar("AAAA", 0,3);
+        Boar boar = new Boar("AAAA", 3,5); //rows 3,5 eg.
         boar.place();
         boar.findsParallel();
+        boar.findStartPW(3, 5);
         boar.display();
        // System.out.println(boar.newRowStart+1);
 
