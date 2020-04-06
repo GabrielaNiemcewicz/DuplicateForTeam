@@ -1,3 +1,5 @@
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.io.*;
 import java.util.*;
 
@@ -97,10 +99,13 @@ public class Dictionary
     } //i want to push dictionary to git, where is file?
     //precondition:: we used getWord first
     public boolean dictionarysearch(String soughtWord)
-    { //*  int index = (int) soughtWord[0];
-      //*  int start = bookmarks[]*//
+    {  int index = (int) soughtWord.charAt(0)-'a';
+        System.out.println("   "+index+"   ");
+    int start = bookmarks[index];
+    int finish = bookmarks[index+1];
 
-        for (int i = 0; i<dictionar.size(); i++) //that's simpler, linear search for now- but on ArrayList
+       
+        for (int i = start; i<=finish; i++) //that's simpler, linear search for now- but on ArrayList
             if(dictionar.get(i).equalsIgnoreCase(soughtWord)) //that's method where we can put any kind of search algorithm
             {
                 return true;
@@ -114,7 +119,7 @@ public class Dictionary
     }
 
 
-    public boolean challengedToRemove(String soughtWord)
+    public boolean challengedToRemove(String soughtWord) //make this interface more efficient- it's stored by getWord
     {
         this.dictionarysearch(soughtWord);
         return match ? false:true;
@@ -129,14 +134,16 @@ public class Dictionary
         Dictionary  dick = new Dictionary();
       //  dick.readToArrayList();
         System.out.println(dick.dictionar.get(101)+"is part of dict");
-        //dick.dictionarysearch("witc"); is your phone on just starting to charge enough now
+        if(dick.dictionarysearch("witch"))
+            System.out.println("SPELLED WORD NN DICT");
       //  if(dick.contain(board))
             System.out.println(board.lastWord.getLetters()+ " is word, valid  word, not challenge edto remove, and should stay");
     //    else
             System.out.println(board.lastWord.getLetters()+"not word");
         System.out.println(dick.dictionar.contains("big"));
 
-        dick.findbookmark();
+
+
 
     }
 }
