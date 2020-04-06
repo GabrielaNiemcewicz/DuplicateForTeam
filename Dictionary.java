@@ -33,14 +33,14 @@ public class Dictionary
 
     public void findbookmark()
     { //pecondition: use after writing readtoarralist
-        bookmarks[0] = 0;
+        this.bookmarks[0] = 0;
         int bookIndex=1;
         for (int i =1; i<dictionar.size();i++)
             if (dictionar.get(i).charAt(0)!=dictionar.get(i-1).charAt(0))
             {
-                bookmarks[bookIndex] = i+1;
+                this.bookmarks[bookIndex] = i+1;
                 bookIndex++;}
-        bookmarks[bookIndex] = 267750;
+        this.bookmarks[bookIndex] = 267750;
 
 
     }
@@ -99,13 +99,14 @@ public class Dictionary
     } //i want to push dictionary to git, where is file?
     //precondition:: we used getWord first
     public boolean dictionarysearch(String soughtWord)
-    {  int index = (int) soughtWord.charAt(0)-'a';
-        System.out.println("   "+index+"   ");
-    int start = bookmarks[index];
-    int finish = bookmarks[index+1];
+    { // int index = (int) soughtWord.charAt(0)-'a';
 
-       
-        for (int i = start; i<=finish; i++) //that's simpler, linear search for now- but on ArrayList
+   //int start = this.bookmarks[index];
+   //int finish = this.bookmarks[index+1];
+
+
+     //  for (int i = start; i<=finish; i++) //that's simpler, linear search for now- but on ArrayList
+        for (int i=0; i<dictionar.size();i++)
             if(dictionar.get(i).equalsIgnoreCase(soughtWord)) //that's method where we can put any kind of search algorithm
             {
                 return true;
@@ -134,16 +135,14 @@ public class Dictionary
         Dictionary  dick = new Dictionary();
       //  dick.readToArrayList();
         System.out.println(dick.dictionar.get(101)+"is part of dict");
-        if(dick.dictionarysearch("witch"))
-            System.out.println("SPELLED WORD NN DICT");
-      //  if(dick.contain(board))
-            System.out.println(board.lastWord.getLetters()+ " is word, valid  word, not challenge edto remove, and should stay");
-    //    else
-            System.out.println(board.lastWord.getLetters()+"not word");
-        System.out.println(dick.dictionar.contains("big"));
+      if(dick.dictionarysearch("abide"))
+         System.out.println("SPELLED WORD NN DICT");
 
-
-
+      //  System.out.println(dick.dictionar.contains("big"));
+ /*
+for(int i=0; i<dick.bookmarks.length; i++)
+    System.out.println(dick.bookmarks[i]);
+*/
 
     }
 }

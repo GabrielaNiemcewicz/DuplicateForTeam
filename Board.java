@@ -342,7 +342,7 @@ public class Board {
         int score = 0;
 
         for (int i = 0; i < word.getLength(); i++) {
-            if(!word.occupiedBeforePlacement(i))
+            if(!word.occupiedBeforePlacement(i)){
             { score += squares[firstPositionX][firstPositionY].getPlacementScore(); //add each multiplication letter score with tile score for word score
                 wordMultiplier *= squares[firstPositionX][firstPositionY].getWordMultiplier(); }//multiply by word multipliers if there are any, otherwise by 1
 
@@ -350,7 +350,7 @@ public class Board {
                 firstPositionY++;
             else
                 firstPositionX++;
-        }
+        }}
         return score * wordMultiplier;
 
     }
