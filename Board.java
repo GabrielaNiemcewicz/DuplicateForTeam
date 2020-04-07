@@ -381,6 +381,174 @@ public class Board {
         }  else
                 errorCode = CHALLENGED_BEFORE_FIRST_ROUND;
         }
+
+    public int[] findsParallel() { //multiple booleans...
+        Word word = this.lastWord;
+        //up and down, left or right
+        //on next run of loop, get r back to normal state, reset to beginning of word
+
+        int[] mobileIndex = new int[16]; //max number of parallel words is 15, and last one is number of parallel words in 1 round
+        for (int i =0; i<15; i++)
+            mobileIndex[i] = -1;
+        mobileIndex[15] = 0; //at first, no parallel words assumed
+        int counter = 0;
+        int newRowStart = word.getFirstRow();
+        int newColumnStart = word.getFirstColumn();
+        //set squarewalkers _around_ the word, depending whether horizontal/vertical
+        //[       ]
+        //*AAAAAAAAA *
+        //[        ]
+        int[] rwalker = new int[2];
+        int[] cwalker = new int[2];
+        int BoxHorS = 0;
+        int BoxHorF = 0;
+        int BoxVerS = 0;
+        int BoxVerF = 0;
+        int temp = 0;
+        if (word.isHorizontal()) {//word moves parallely in 1same row
+            //row- const index
+            if (newRowStart > 0)
+                rwalker[0] = newRowStart - 1; //UP
+            else rwalker[0] = newRowStart + 1;
+            if (newRowStart < 14)
+                rwalker[1] = newRowStart + 1; //DOWN
+            else rwalker[1] = newRowStart - 1;
+            System.out.println(rwalker[0] + " = up, lower, AND " + rwalker[1] + "down, higher");
+            //columns- mobile index
+            BoxHorS = Math.max(0, newColumnStart);
+            BoxHorF = Math.min(newColumnStart + word.getLength(), 14);
+        } else {//this is vertical
+            //column- constant index //error
+            if (newColumnStart > 0)
+                cwalker[0] = newColumnStart - 1; //UP
+            else cwalker[0] = newColumnStart + 1;
+            if (newRowStart < 8)
+                cwalker[1] = newColumnStart + 1; //DOWN
+            else cwalker[1] = newColumnStart - 1;
+            temp = newRowStart + word.getLength();
+            BoxVerS = Math.max(0, newRowStart);
+            BoxVerF = Math.min(temp, 8);
+
+        }
+        if (word.isHorizontal()) {
+            for (int i = BoxHorS; i < BoxHorF; i++) //testing code till now
+            {
+
+                if (!word.occupiedBeforePlacement(i - BoxHorS) && ((squares[rwalker[0]][i].isOccupied()) || (squares[rwalker[1]][i].isOccupied()))) //if occ. square was existing connection, or *both* of two around are still empty
+                {
+                    mobileIndex[counter] = i;
+                    counter += 1; //1 word parallel found
+                }
+            }
+        }
+        if (word.isVertical()) { //is Vertical
+            for (int i = BoxVerS; i < BoxVerF; i++) {
+
+              //  if (!word.occupiedBeforePlacement(i - BoxVerS) && ((squares[i][cwalker[0]].isOccupied()) || (squares[i][cwalker[1]].isOccupied()))) //if occ. square was existing connection, or *both* of two around are still empty
+               // {
+                    mobileIndex[counter] = i;
+                    counter += 1; //1 word parallel found
+              //  }
+            }
+
+
+        }  return mobileIndex;
+    }
+
+
+    public String messageParallel(){
+        int [] parIndex = this.findsParallel();
+        String msg = "";
+        for (int i =0; i<15; i++)
+        {if (parIndex[i]<0)
+            break;
+         else   msg+=parIndex[i]; }
+        msg+="- at those positions detected";
+        msg+=parIndex[15];
+        msg+=" parallel words";
+        return msg;
+
+
+    }
+
+//use with external loop involving findParallel
+    public /*int[]*/ String findStartPW(int foundP, Word word) { //PW = parallel word
+int rcontained, ccontained;
+
+        int[] startPosPW;
+        // startPosPW = new int[2];
+        //startPosPW = new int[]{rcontained, ccontained};
+        //horizontal: row is constant, col is mobile
+        //vertical:   row is mobile,   col is horizontal
+        if(word.isHorizontal())
+        {
+           rcontained = word.getRow();//mobile in p
+           ccontained = foundP;
+
+        }
+        else //vertical
+        {
+            rcontained = foundP;
+            ccontained = word.getColumn();//mobile in p
+        }
+        if (word.isHorizontal())
+        {  while (rcontained > 0 && squares[rcontained - 1][ccontained].isOccupied()) //while tiles 'touch' and we don't run out of board
+        {
+            rcontained-=1;
+
+        }}
+        else //isVertical
+        {  while (ccontained > 0 && squares[rcontained][ccontained - 1].isOccupied()) //while tiles 'touch' and we don't run out of board
+        {
+            ccontained--;
+
+        }}
+        //  startPosPW[0] = rcontained;
+        //startPosPW[1] = ccontained;
+        //System.out.println(startPosPW[0] + "   " + startPosPW[1]);
+        String start = "";
+        start+= rcontained;
+        start+= "  and column";
+        start+= ccontained;
+        System.out.println(rcontained + "   " + ccontained);
+       return start;
+
+    }
+/*
+    public void buildParallelWord() {
+        String pWord = "";
+        int riter, int citer;
+
+
+        //horizontal: row is constant, col is mobile
+        //vertical:   row is mobile,   col is horizontal
+        //parallel word transposes indices
+        if (isHor) {
+            while (riter < 8 && boar[riter][citer] != '_') //while tiles 'touch' and we don't run out of board
+            {
+                pWord += boar[riter][citer];
+                riter++;
+            }
+            if (riter < 8)
+                riter--; //if we wanted to test what is last index of returned position
+        } else //isVertical
+        {
+            while (citer < 8 && boar[riter][citer] != '_') //while tiles 'touch' and we don't run out of board
+            {
+                pWord += boar[riter][citer];
+                System.out.println(boar[riter][citer]);
+                citer++;
+            }
+            if (citer < 8) //if we wanted to test what is last index of returned position
+                citer--;
+        }
+        this.parallelWords.add(pWord);
+    }
+
+*/
+
+
+
         /*
         public void findsParallel() { //multiple booleans...
         int back = -1;
