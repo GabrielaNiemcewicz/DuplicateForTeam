@@ -247,16 +247,6 @@ public class Board {
         return points;
     }
 
-    public boolean isInDic(Dictionary dictionary){
-        String last = this.lastWord.getLetters();
-        dictionary.getWord(last);
-        boolean isIn = dictionary.contain();
-        return isIn;
-
-
-    }
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////needs testing. urgently.
   /*  private void parallelScore() {
@@ -360,7 +350,7 @@ public class Board {
     }
 
     public boolean challengeLegal(){
-        if(this.numPlays<1) //don't challenge when board is emptied, even if on first central word challenged but numlays>1
+        if(this.numPlays<1 ||this.lastWord==null) //don't challenge when board is emptied, even if on first central word challenged but numlays>1
         { challengeErrorAssinger();
             return false;}
         return true;
@@ -391,5 +381,132 @@ public class Board {
         }  else
                 errorCode = CHALLENGED_BEFORE_FIRST_ROUND;
         }
+        /*
+        public void findsParallel() { //multiple booleans...
+        int back = -1;
+        int next = +1;
+        //up and down, left or right
+        //on next run of loop, get r back to normal state, reset to beginning of word
+        r = this.newRowStart;
+        c = this.newColumnStart;
+        //set squarewalkers _around_ the word, depending whether horizontal/vertical
+        //[       ]
+        //*AAAAAAAAA *
+        //[        ]
+        int[] rwalker = new int[2];
+        int[] cwalker = new int[2];
+        int BoxHorS = 0;
+        int BoxHorF = 0;
+        int BoxVerS = 0;
+        int BoxVerF = 0;
+
+        if (this.isHor) {//word moves parallely in 1same row
+            //row- const index
+            if (this.newRowStart > 0)
+                rwalker[0] = this.newRowStart - 1; //UP
+            else rwalker[0] = this.newRowStart + 1;
+            if (this.newRowStart < 8)
+                rwalker[1] = this.newRowStart + 1; //DOWN
+            else rwalker[1] = this.newRowStart - 1;
+            System.out.println(rwalker[0] + " = up, lower, AND " + rwalker[1] + "down, higher");
+            //columns- mobile index
+            BoxHorS = Math.max(0, c);
+            BoxHorF = Math.min(c + size, 8);
+        } else {//this is vertical
+            //column- constant index //error
+            if (this.newColumnStart > 0)
+                cwalker[0] = this.newColumnStart - 1; //UP
+            else cwalker[0] = this.newColumnStart + 1;
+            if (this.newRowStart < 8)
+                cwalker[1] = this.newColumnStart + 1; //DOWN
+            else cwalker[1] = this.newColumnStart - 1;
+
+            BoxVerS = Math.max(0, r);
+            BoxVerF = Math.min(r + size, 8);
+
+        }
+        if (this.isHor)
+            for (int i = BoxHorS; i < BoxHorF; i++) //testing code till now
+            {
+                System.out.println(boar[this.newRowStart][i] + "is each letter in first-placed word, AAAA, where NNAA is paralel info");
+                if (boar[this.newRowStart][i] == 'A' && !((boar[rwalker[0]][i] == '_') && (boar[rwalker[1]][i] == '_'))) //if occ. square was existing connection, or *both* of two around are still empty
+                    boar[this.newRowStart][i] = 'N';
+            }
+        if (!this.isHor) //is Vertical
+            for (int i = BoxVerS; i < BoxVerF; i++) {
+                System.out.println(boar[i][this.newColumnStart] + "is each letter in first-placed word, AAAA, where ???? is paralel info");
+                if (boar[i][this.newColumnStart] == 'A' && !((boar[i][cwalker[0]] == '_') && (boar[i][cwalker[1]] == '_'))) //if occ. square was existing connection, or *both* of two around are still empty
+                    boar[i][this.newColumnStart] = 'N';
+            }
+
+
+        System.out.println("new column start" + this.newColumnStart + "  " + boar[BoxHorS][this.newColumnStart]);
+    }
+    //precindition: given indices locate a square that *IS* part of parallel word, but we don't know if it's first, second or which index
+    //so we look
+
+
+    public int[] void findStartPW(int rcontained, int ccontained) { //PW = parallel word
+            int[] startPosPW;
+            startPosPW = new int[]{rcontained, ccontained};
+            //horizontal: row is constant, col is mobile
+            //vertical:   row is mobile,   col is horizontal
+            if (isHor)
+                while (rcontained > 0 && boar[rcontained - 1][ccontained] != '_') //while tiles 'touch' and we don't run out of board
+                {
+                    rcontained--;
+                    startPosPW[0] = rcontained;
+                }
+            else //isVertical
+                while (ccontained > 0 && boar[rcontained][ccontained - 1] != '_') //while tiles 'touch' and we don't run out of board
+                {
+                    ccontained--;
+                    startPosPW[1] = ccontained;
+                }
+
+            System.out.println(startPosPW[0] + "   " + startPosPW[1]);
+        }
+
+
+    public int findEndParalllelWord() {
+        return 0;
+    }
+
+    public void buildParallelWord(int firstRow, int firstColumn) {
+        String pWord = "";
+
+        int[] endPosPW;
+        endPosPW = new int[]{firstRow, firstColumn};
+        //horizontal: row is constant, col is mobile
+        //vertical:   row is mobile,   col is horizontal
+        //parallel word transposes indices
+        if (isHor) {
+            while (firstRow < 8 && boar[firstRow][firstColumn] != '_') //while tiles 'touch' and we don't run out of board
+            {
+                pWord += boar[firstRow][firstColumn];
+                firstRow++;
+            }
+            if(firstRow<8)
+                firstRow--;
+        } else //isVertical
+        {
+            while (firstColumn < 8 && boar[firstRow][firstColumn] != '_') //while tiles 'touch' and we don't run out of board
+            {    pWord += boar[firstRow][firstColumn];
+                System.out.println(boar[firstRow][firstColumn]);
+                firstColumn++;
+            }
+            if(firstColumn<8)
+                firstColumn--;
+        }
+
+
+        endPosPW[0] = firstRow;
+        endPosPW[1] = firstColumn;
+        System.out.println(endPosPW[0] + "   " + endPosPW[1]);
+        System.out.println(pWord);
+    }
+
+
+        */
 
 }

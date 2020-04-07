@@ -19,7 +19,6 @@ public class UserInterface {
     Button[][] displaySquares = new Button[Board.BOARD_SIZE][Board.BOARD_SIZE];
     Scrabble scrabble;
     boolean gameOver;
-    boolean inDic= true;
 
     UserInterface() {
         scrabble = new Scrabble();
@@ -93,30 +92,42 @@ public class UserInterface {
     void displaySquare(int r, int c) {
         Square square = scrabble.getBoard().getSquare(r, c);
         Button button = displaySquares[r][c];
-        var style = new StringBuilder();
-        style.append("-fx-background-radius: 0;");
+        String style = "";
+        style+="-fx-background-radius: 0;";
         String color;
-        if (square.isDoubleLetter()) {
+        if (square.isDoubleLetter())
+        {
             color = "8080ff";
-        } else if (square.isTripleLetter()) {
+        }
+        else if (square.isTripleLetter())
+        {
             color = "0000ff";
-        } else if (square.isDoubleWord()) {
+        }
+        else if (square.isDoubleWord())
+        {
             color = "ff8080";
-        } else if (square.isTripleWord()) {
+        }
+        else if (square.isTripleWord())
+        {
             color = "ff0000";
-        } else {
+        }
+        else
+        {
             color = "ffffff";
         }
-        style.append("-fx-background-color: #").append(color).append(';');
+        //Color.rbg(130,30,12);
+        style+="-fx-background-color: #";
+        style+=color;
+        style+=';';
         if (square.isOccupied()) {
-            style.append("-fx-font-size: 14pt;");
-            style.append("-fx-font-weight: bold;");
-            button.setStyle(style.toString());
+            style+="-fx-font-size: 14pt;";
+            style+="-fx-font-weight: bold;";
+            button.setStyle(style);
             button.setText(square.getTile() + "");  // placed letter
         } else {
-            style.append("-fx-font-size: 8pt;");
-            style.append("-fx-font-weight: lighter;");
-            button.setStyle(style.toString());
+            style+="-fx-font-size: 8pt;";
+            style+="-fx-font-weight: lighter;";
+            button.setStyle(style);
             if (r == 0) {
                 button.setText(((char) (((int) 'A') + c)) + "");  // column letters
             } else if (c == 0) {
@@ -144,45 +155,48 @@ public class UserInterface {
             }
         } else if (!gameOver && (command.equals("HELP")||command.equals("H"))) {
             printHelp();
-        } else if (!gameOver && (command.equals("DDOS")||command.equals("D"))) {
+        } else if (!gameOver && (command.equals("SCORE")||command.equals("S"))) {
+            printScores();
+        } else if (!gameOver && (command.equals("POOL")||command.equals("O"))) {
+            printPoolSize();
+        }
+        else if (!gameOver && (command.equals("DDOS")||command.equals("D"))) {
 
             printLine(scrabble.getDictionary().dictionar.size()+"size");
             // scrabble.getDictionary().getWord();
 
-            printLine(inDic+" Bool in scrabble   ");
-            if(  scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters()))
+            printLine(" Bool in scrabble ");
+            if(scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters()) /*scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters())*/)
                 printLine("Celebrate it's a word");
             else
-                printLine("Not in the Dick");
+                printLine("Not in the Dict");
             //printLine(scrabble.dictionar.get(276));
         }
-        else if (!gameOver && (command.equals("SCORE")||command.equals("S"))) {
-            printScores();
-        } else if (!gameOver && (command.equals("POOL")||command.equals("O"))) {
-            printPoolSize();
-        } else if (!gameOver && (command.equals("CHALLENGE")||command.equals("C")))
-        {// if(dictionary.challengedToRemove(scrabble.getBoard().lastWord) //as Word object, add encapsulation (getter)
-            if (scrabble.getBoard().challengeLegal()) {
-                if (!scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters())) {
-                    scrabble.challenge();
-                    refreshBoard();
-                }
-            else
-                printLine("correct word");
-            }
-                else {
-                    scrabble.getBoard().challengeErrorAssinger();
-                    printPlayError(scrabble.getBoard().getErrorCode());
-                }
-            //  scrabble.getBoard().removeChallenged(scrabble.getPool(),scrabble.getOtherPlayer()); //last round's word stored in board as temWord var on top of board class
-            //else //if it's a correct word
-            // printLine("Challenged word  "+scrabble.getBoard().lastWord+"exists in SOPOWDS dictionary");
-        } else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
+         else if (!gameOver && (command.equals("CHALLENGE")||command.equals("C")))
+         {
+
+             if (scrabble.getBoard().challengeLegal())
+             {
+                 if (!scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters()))
+                 {
+                     scrabble.challenge();
+                     refreshBoard();
+                 }
+                 else
+                     printLine("correct word, board is occupied");
+             }
+             else
+                 {
+                 scrabble.getBoard().challengeErrorAssinger();
+                 printPlayError(scrabble.getBoard().getErrorCode());
+             }
+         }
+             else if (!gameOver && (command.matches("NAME( )+([A-Z_]){0,9}") || command.matches("N( )+([A-Z_]){0,9}"))) {
             String[] parts = command.split("( )+");
             String uname = parts[1];
             if (uname.length() > 0)
                 currentPlayer.setName(uname);
-        }else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z]){1,15}") || (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}( )+([A-Z]){1,2}")))){
+        } else if (!gameOver && (command.matches("[A-O](\\d){1,2}( )+[A,D]( )+([A-Z_]){1,15}"))) {
             Word word = parsePlay(command);
             if (!scrabble.getBoard().isLegalPlay(currentPlayer.getFrame(), word)) {
                 printPlayError(scrabble.getBoard().getErrorCode());
@@ -235,25 +249,7 @@ public class UserInterface {
         String directionText = parts[1];
         boolean isHorizontal = directionText.equals("A");
         String letters = parts[2];
-        String newLetters = "";
-        char assignedChar;
-        int ite = 0;
-        for (int i = 0; i<letters.length() ;i++) {
-            if (letters.charAt(i) == '_'){
-                if(parts[3].length()>ite){
-                    assignedChar = parts[3].charAt(ite);
-
-                    newLetters+= assignedChar;
-                    ite++;}
-                else //too many blanks when specified less letters
-                    newLetters+="WRTGFHKV";
-            }
-            else
-                newLetters += letters.charAt(i);
-        }
-        if(ite>0)
-            printLine(ite+" blank accessed");
-        return new Word(row, column, isHorizontal, newLetters);
+        return new Word(row, column, isHorizontal, letters);
     }
 
     // Print methods

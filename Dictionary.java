@@ -18,14 +18,14 @@ public class Dictionary
         bookmarks = new int [27];//26 letters and 1 blank
         match = false;
         this.readToArrayList();
-        this.findbookmark();
+       // this.findbookmark();
 
     }
     void getWord(String soughtWord){
         this.soughtWord = soughtWord;
 
     }//gimme a minute, I'll look at sth in ui
-//so, which do we have? we have the bineyseach you wrote for me i take pics and send it to you okay
+    //so, which do we have? we have the bineyseach you wrote for me i take pics and send it to you okay
     public ArrayList<String> getDictionar()
     {
         return dictionar;
@@ -95,22 +95,22 @@ public class Dictionary
     public boolean contain()
     {
         boolean isIn = dictionar.contains(this.soughtWord);
-       return isIn;
+        return isIn;
     } //i want to push dictionary to git, where is file?
     //precondition:: we used getWord first
     public boolean dictionarysearch(String soughtWord)
     { // int index = (int) soughtWord.charAt(0)-'a';
 
-   //int start = this.bookmarks[index];
-   //int finish = this.bookmarks[index+1];
+        //int start = this.bookmarks[index];
+        //int finish = this.bookmarks[index+1];
 
 
-     //  for (int i = start; i<=finish; i++) //that's simpler, linear search for now- but on ArrayList
+        //  for (int i = start; i<=finish; i++) //that's simpler, linear search for now- but on ArrayList
         for (int i=0; i<dictionar.size();i++)
             if(dictionar.get(i).equalsIgnoreCase(soughtWord)) //that's method where we can put any kind of search algorithm
             {
                 return true;
-               // System.out.println(soughtWord);
+                // System.out.println(soughtWord);
             }
         return false;
     }
@@ -128,17 +128,17 @@ public class Dictionary
     public static void main (String[]args)
     {
         Board board = new Board();
-       Word big = new Word(8,8,true,"BIG");
+        Word big = new Word(8,8,true,"BIG");
         System.out.println(big.getLetters()+"word before board letters");
-       board.lastWord = big;
+        board.lastWord = big;
         System.out.println(board.lastWord.getLetters()+"word in board letters");
         Dictionary  dick = new Dictionary();
-      //  dick.readToArrayList();
+        //  dick.readToArrayList();
         System.out.println(dick.dictionar.get(101)+"is part of dict");
-      if(dick.dictionarysearch("abide"))
-         System.out.println("SPELLED WORD NN DICT");
+        if(dick.dictionarysearch("abide"))
+            System.out.println("SPELLED WORD NN DICT");
 
-      //  System.out.println(dick.dictionar.contains("big"));
+        //  System.out.println(dick.dictionar.contains("big"));
  /*
 for(int i=0; i<dick.bookmarks.length; i++)
     System.out.println(dick.bookmarks[i]);
