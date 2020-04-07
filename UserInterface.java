@@ -171,12 +171,12 @@ public class UserInterface {
             printLine("Found extra"+scrabble.getBoard().findsParallel()[15]+"words upon placement");
 
            for(int each:scrabble.getBoard().findsParallel())
-               printLine(scrabble.getBoard().findStartPW(each, scrabble.getBoard().lastWord));
+               printLine("Parallel words start positions (eg. start row for v-word of user-h-word):"+scrabble.getBoard().findStartPW(each, scrabble.getBoard().lastWord));
          //   if(scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters()) /*scrabble.getDictionary().dictionarysearch(scrabble.getBoard().lastWord.getLetters())*/)
            //     printLine("Celebrate it's a word");
            // else
              //   printLine("Not in the Dict");
-
+             //   scrabble.getBoard().buildParallelWord();
            // scrabble.getBoard().parallelWords[]
             //printLine(scrabble.dictionar.get(276));
         }
