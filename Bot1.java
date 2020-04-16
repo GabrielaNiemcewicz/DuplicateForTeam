@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Bot0 implements BotAPI
+public class Bot1 implements BotAPI
 {
 
     // The public API of Bot must not change
@@ -25,7 +25,7 @@ public class Bot0 implements BotAPI
     private int maxLength;
 
     //private float vowelCount;
-    Bot0 (PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
+    Bot1 (PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
         this.me = me;
         this.opponent = opponent;
         this.board = board;
@@ -72,9 +72,9 @@ public class Bot0 implements BotAPI
 
     }
 
-public ArrayList <String> bruteForce (int wordSize){
-       ArrayList <String> placedLetters = new ArrayList<String>();
-       String permutation = "";
+    public ArrayList <String> bruteForce (int wordSize){
+        ArrayList <String> placedLetters = new ArrayList<String>();
+        String permutation = "";
         int [] iterators = new int[wordSize];
         for (int i=0; i<iterators.length; i++)
             iterators[i]=0;
@@ -84,79 +84,79 @@ public ArrayList <String> bruteForce (int wordSize){
             if(wordSize==1)
                 placedLetters.add(new String(String.valueOf(this.normalFrame.charAt(iterators[0]))));
             else
-            while(iterators[1]<7){
-                if(iterators[0]==iterators[1])
-                    iterators[1]++;
-                if(wordSize==2) {
-                    for(int i=0; i<wordSize;i++)
-                        permutation+=this.normalFrame.charAt(iterators[i]);
-
-                    placedLetters.add(permutation);
-                    permutation= ""; //cleans it
-                } else
-                while(iterators[2]<7){
-                     if(iterators[2]==iterators[0]||iterators[2]==iterators[1])
-                         iterators[2]++;
-                    if(wordSize==3){
+                while(iterators[1]<7){
+                    if(iterators[0]==iterators[1])
+                        iterators[1]++;
+                    if(wordSize==2) {
                         for(int i=0; i<wordSize;i++)
                             permutation+=this.normalFrame.charAt(iterators[i]);
 
-                    placedLetters.add(permutation);
-                    permutation= "";} //cleans it
-                       else
-                    while(iterators[3]<7){
-                        if(iterators[3]==iterators[0]||iterators[3]==iterators[1]||iterators[3]==iterators[2])
-                             iterators[3]++;
-                        if(wordSize==4){
-                            for(int i=0; i<wordSize;i++)
-                                permutation+=this.normalFrame.charAt(iterators[i]);
-
-                            placedLetters.add(permutation);
-                            permutation= "";}
-                        else
-                        while(iterators[4]<7){
-                            if(iterators[4]==iterators[0]||iterators[4]==iterators[1]||iterators[4]==iterators[2]||iterators[4]==iterators[3])
-                                iterators[4]++;
-                            if(wordSize==5){
-                                for(int i=0; i<wordSize; i++)
+                        placedLetters.add(permutation);
+                        permutation= ""; //cleans it
+                    } else
+                        while(iterators[2]<7){
+                            if(iterators[2]==iterators[0]||iterators[2]==iterators[1])
+                                iterators[2]++;
+                            if(wordSize==3){
+                                for(int i=0; i<wordSize;i++)
                                     permutation+=this.normalFrame.charAt(iterators[i]);
 
                                 placedLetters.add(permutation);
-                                permutation= "";}
+                                permutation= "";} //cleans it
                             else
-                            while(iterators[5]<7){
-                                if(iterators[5]==iterators[0]||iterators[5]==iterators[1]||iterators[5]==iterators[2]||iterators[5]==iterators[3]||iterators[5]==iterators[4])
-                                    iterators[5]++;
-                                if(wordSize==6){
-                                    for(int i=0; i<wordSize;i++)
-                                        permutation+=this.normalFrame.charAt(iterators[i]);
-
-                                    placedLetters.add(permutation);
-                                    permutation= "";}   else
-                                while(iterators[6]<7) {
-                                    if (iterators[6] == iterators[0] || iterators[6] == iterators[1] || iterators[6] == iterators[2] || iterators[6] == iterators[3] || iterators[6] == iterators[4] || iterators[6] == iterators[5])
-                                        iterators[6]++;
-                                    {
+                                while(iterators[3]<7){
+                                    if(iterators[3]==iterators[0]||iterators[3]==iterators[1]||iterators[3]==iterators[2])
+                                        iterators[3]++;
+                                    if(wordSize==4){
                                         for(int i=0; i<wordSize;i++)
                                             permutation+=this.normalFrame.charAt(iterators[i]);
 
                                         placedLetters.add(permutation);
                                         permutation= "";}
-                                    iterators[6]++;                        }
-                                iterators[5]++;                    }
-                            iterators[4]++;               }
-                        iterators[3]++;             }
-                    iterators[2]++;         }
-                iterators[1]++;     }
-      iterators[0]++;  }
+                                    else
+                                        while(iterators[4]<7){
+                                            if(iterators[4]==iterators[0]||iterators[4]==iterators[1]||iterators[4]==iterators[2]||iterators[4]==iterators[3])
+                                                iterators[4]++;
+                                            if(wordSize==5){
+                                                for(int i=0; i<wordSize; i++)
+                                                    permutation+=this.normalFrame.charAt(iterators[i]);
+
+                                                placedLetters.add(permutation);
+                                                permutation= "";}
+                                            else
+                                                while(iterators[5]<7){
+                                                    if(iterators[5]==iterators[0]||iterators[5]==iterators[1]||iterators[5]==iterators[2]||iterators[5]==iterators[3]||iterators[5]==iterators[4])
+                                                        iterators[5]++;
+                                                    if(wordSize==6){
+                                                        for(int i=0; i<wordSize;i++)
+                                                            permutation+=this.normalFrame.charAt(iterators[i]);
+
+                                                        placedLetters.add(permutation);
+                                                        permutation= "";}   else
+                                                        while(iterators[6]<7) {
+                                                            if (iterators[6] == iterators[0] || iterators[6] == iterators[1] || iterators[6] == iterators[2] || iterators[6] == iterators[3] || iterators[6] == iterators[4] || iterators[6] == iterators[5])
+                                                                iterators[6]++;
+                                                            {
+                                                                for(int i=0; i<wordSize;i++)
+                                                                    permutation+=this.normalFrame.charAt(iterators[i]);
+
+                                                                placedLetters.add(permutation);
+                                                                permutation= "";}
+                                                            iterators[6]++;                        }
+                                                    iterators[5]++;                    }
+                                            iterators[4]++;               }
+                                    iterators[3]++;             }
+                            iterators[2]++;         }
+                    iterators[1]++;     }
+            iterators[0]++;  }
         return placedLetters;
-}
+    }
 
 
     //use after updating unwrapped frame
     private Word generateWords(){
-      chosenDicWordForPlacement =new Word(7,7,true, this.permutations.get(2),"");
-      return chosenDicWordForPlacement;
+        chosenDicWordForPlacement =new Word(7,7,true, this.permutations.get(2),"");
+        return chosenDicWordForPlacement;
 
     }
 
@@ -189,41 +189,41 @@ public ArrayList <String> bruteForce (int wordSize){
         return isPass;
 
     }
-//prototype
-public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
-{   ArrayList <Coordinates> legalTwos = new ArrayList<Coordinates>();
-    Frame frame = new Frame();
-    ArrayList<Tile> lettersIntoTiles = new ArrayList<Tile> ();
-    unchrisIt();
-    for(int i=0; i<this.normalFrame.length(); i++)
-        lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
-    int [][] coordinatesRC = new int[15][15]; //later- possible max length of word, horizontally
-    int counter =0;
-    Coordinates legalStart = new Coordinates(69,69); //= new Coordinates(7,7);
-    for (int i=0; i<15;i++)
-        for(int j=0;j<15;j++)
-            if(board.isLegalPlay(frame, new Word(i,j,true, frame.toString().substring(0,2))))
-            { this.command+="I'm gay 1920 meaning";
-                coordinatesRC[i][j]= 2; //word.length()
+    //prototype
+    public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
+    {   ArrayList <Coordinates> legalTwos = new ArrayList<Coordinates>();
+        Frame frame = new Frame();
+        ArrayList<Tile> lettersIntoTiles = new ArrayList<Tile> ();
+        unchrisIt();
+        for(int i=0; i<this.normalFrame.length(); i++)
+            lettersIntoTiles.add(new Tile (this.normalFrame.charAt(i)));
+        int [][] coordinatesRC = new int[15][15]; //later- possible max length of word, horizontally
+        int counter =0;
+        Coordinates legalStart = new Coordinates(69,69); //= new Coordinates(7,7);
+        for (int i=0; i<15;i++)
+            for(int j=0;j<15;j++)
+                if(board.isLegalPlay(frame, new Word(i,j,true, frame.toString().substring(0,2))))
+                { this.command+="I'm gay 1920 meaning";
+                    coordinatesRC[i][j]= 2; //word.length()
 
-                // legalTwos.add(legalStart);
-            }
-            else{
-                coordinatesRC[i][j] = 0;
-                if(counter<1)
-                {this.command+=frame.toString(); counter++;}
-                if(counter<2)
-                {this.command+=frame.toString().length(); counter++;}
+                    // legalTwos.add(legalStart);
+                }
+                else{
+                    coordinatesRC[i][j] = 0;
+                    if(counter<1)
+                    {this.command+=frame.toString(); counter++;}
+                    if(counter<2)
+                    {this.command+=frame.toString().length(); counter++;}
 
-            }
-    return coordinatesRC[7][7];
+                }
+        return coordinatesRC[7][7];
 
 
 /*if(legalStart.equals(null))
     return new Coordinates(404,404).getRow();
 else
    return  legalStart.getRow();*///legalTwos.get(0).getRow();
-}
+    }
 
 
 
@@ -255,25 +255,25 @@ else
 
 
 
-        private String build_command_correct_word(Word chosenDicWordForPlacement){
+    private String build_command_correct_word(Word chosenDicWordForPlacement){
         //if no blanks
-            String command= "";
+        String command= "";
         command+=" ";
         command+= chosenDicWordForPlacement.getLetters();
-            return command;
+        return command;
 
-        }
+    }
 
 
 
 
     public String build_command(Word chosenDicWordForPlacement) {
         String command= "";
-     command+=  this.build_command_startPlace(chosenDicWordForPlacement);
-     command+=   this.build_command_orientation(chosenDicWordForPlacement);
-     command+=  this.build_command_correct_word(chosenDicWordForPlacement);
-     command+=   this.build_command_if_blank(chosenDicWordForPlacement);
-     return command;
+        command+=  this.build_command_startPlace(chosenDicWordForPlacement);
+        command+=   this.build_command_orientation(chosenDicWordForPlacement);
+        command+=  this.build_command_correct_word(chosenDicWordForPlacement);
+        command+=   this.build_command_if_blank(chosenDicWordForPlacement);
+        return command;
 
     }
 
@@ -327,7 +327,7 @@ else
 
                 command = "NAME CrispyChris";
                 command= this.build_command(this.generateWords());
-                command+=this.getLegalStart()+"  ";//.getRow()+" "+this.getLegalStart().getCol();
+                // command+=this.getLegalStart()+"  ";//.getRow()+" "+this.getLegalStart().getCol();
                 command+=this.command;
                 break;
        /*     case 1:
@@ -350,7 +350,7 @@ else
                 break;
             case 2:
 
-               // command+= this.build_command(this.generateWords());
+                // command+= this.build_command(this.generateWords());
                 break;
             case 3:
                 command=  this.build_command(this.generateWords());
@@ -369,4 +369,3 @@ else
     }
 
 }
-
