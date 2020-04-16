@@ -195,14 +195,29 @@ public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
     Frame frame = new Frame();
     ArrayList<Tile> lettersIntoTiles = new ArrayList<Tile> ();
     unchrisIt();
+    String fullWord = "";
     for(int i=0; i<this.normalFrame.length(); i++)
         lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
     int [][] coordinatesRC = new int[15][15]; //later- possible max length of word, horizontally
     int counter =0;
     Coordinates legalStart = new Coordinates(69,69); //= new Coordinates(7,7);
+   //horizontal check
+    for(int l=2;l<3;l++) //what's the length of searched word for legal issues
     for (int i=0; i<15;i++)
-        for(int j=0;j<15;j++)
-            if(board.isLegalPlay(frame, new Word(i,j,true, frame.toString().substring(0,2))))
+        for(int j=0,f=0;j<15;j++){
+
+            for(int w=0;w<l;w++)//precondition: hor, change for ver
+                if(board.getSquareCopy(i,j+w).isOccupied())
+                    fullWord+=board.getSquareCopy(i,j+w).getTile().getLetter();
+                else if (f<7){
+
+                    fullWord += normalFrame.charAt(f);
+                    f++;
+                }
+                else
+                    fullWord+="XVX";
+
+            if(board.isLegalPlay(frame, new Word(i,j,true, fullWord)))
             { this.command+="I'm gay 1920 meaning";
                 coordinatesRC[i][j]= 2; //word.length()
 
@@ -210,13 +225,13 @@ public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
             }
             else{
                 coordinatesRC[i][j] = 0;
-                if(counter<1)
+               /* if(counter<1)
                 {this.command+=frame.toString(); counter++;}
                 if(counter<2)
-                {this.command+=frame.toString().length(); counter++;}
+                {this.command+=frame.toString().length(); counter++;}*/
 
-            }
-    return coordinatesRC[7][7];
+            }}
+    return coordinatesRC[3][4];
 
 
 /*if(legalStart.equals(null))
