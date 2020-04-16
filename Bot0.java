@@ -190,7 +190,7 @@ public ArrayList <String> bruteForce (int wordSize){
 
     }
 //prototype
-public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
+public /*Coordinates**/ String getLegalStart(/*Frame frame, Word word*/)
 {   ArrayList <Coordinates> legalTwos = new ArrayList<Coordinates>();
     Frame frame = new Frame();
     ArrayList<Tile> lettersIntoTiles = new ArrayList<Tile> ();
@@ -198,13 +198,16 @@ public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
     String fullWord = "";
     for(int i=0; i<this.normalFrame.length(); i++)
         lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
-    int [][] coordinatesRC = new int[15][15]; //later- possible max length of word, horizontally
+    ArrayList <Integer> validWordLengthsHere = new ArrayList<Integer>();
+    String[][] coordinatesRC = new String[15][15];
+
+    ; //later- possible max length of word, horizontally
     int counter =0;
     Coordinates legalStart = new Coordinates(69,69); //= new Coordinates(7,7);
    //horizontal check
-    for(int l=2;l<3;l++) //what's the length of searched word for legal issues
-    for (int i=0; i<15;i++)
-        for(int j=0,f=0;j<15;j++){
+    for(int l=2;l<16;l++) //what's the length of searched word for legal issues
+    for (int i=0; i<15;i++) //horiontal all rows
+        for(int j=0,f=0;j<15-l+1;j++){ //vertical cut end of some columns
 
             for(int w=0;w<l;w++)//precondition: hor, change for ver
                 if(board.getSquareCopy(i,j+w).isOccupied())
@@ -217,20 +220,13 @@ public /*Coordinates**/ int getLegalStart(/*Frame frame, Word word*/)
                 else
                     fullWord+="XVX";
 
+
             if(board.isLegalPlay(frame, new Word(i,j,true, fullWord)))
             { this.command+="I'm gay 1920 meaning";
-                coordinatesRC[i][j]= 2; //word.length()
-
-                // legalTwos.add(legalStart);
+                coordinatesRC[i][j]+= l; //word.length()
             }
-            else{
-                coordinatesRC[i][j] = 0;
-               /* if(counter<1)
-                {this.command+=frame.toString(); counter++;}
-                if(counter<2)
-                {this.command+=frame.toString().length(); counter++;}*/
-
-            }}
+        f = 0; //when finished creating and checking word legality, there is 0 used tiles in Frame again
+        }
     return coordinatesRC[3][4];
 
 
