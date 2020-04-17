@@ -73,6 +73,7 @@ public class Bot0 implements BotAPI
 
     }
 
+
 public ArrayList <String> bruteForce (int wordSize){
        ArrayList <String> placedLetters = new ArrayList<String>();
        String permutation = "";
@@ -191,26 +192,32 @@ public ArrayList <String> bruteForce (int wordSize){
 
     }
 //prototype
-public /*Coordinates**/ String[][] getLegalStart(/*Frame frame, Word word*/)
-{   ArrayList <Coordinates> legalTwos = new ArrayList<Coordinates>();
-    Frame frame = new Frame();
+public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word word*/)
+{ Frame frame = new Frame();
     ArrayList<Tile> lettersIntoTiles = new ArrayList<Tile> ();
+
+    //
+    Integer currLen;
     unchrisIt();
     String fullWord = "";
     for(int i=0; i<this.normalFrame.length(); i++)
         lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
+   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....
     ArrayList <Integer> validWordLengthsHere = new ArrayList<Integer>();
-    String[][] coordinatesRC = new String[15][15];
-
+    //String[][] coordinatesRC = new String[15][15];
+    ArrayList<Integer> allLengthsHere = new ArrayList<Integer>();
+    HashMap<Coordinates,ArrayList<Integer>> legalLenghts=new HashMap<Coordinates,ArrayList<Integer>>();
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....
     ; //later- possible max length of word, horizontally
     int counter =0;
     Coordinates legalStart = new Coordinates(69,69); //= new Coordinates(7,7);
    //horizontal check
-    for(int l=2;l<16;l++) //what's the length of searched word for legal issues
-    for (int i=0; i<15;i++) //horiontal all rows
-        for(int j=0,f=0;j<15-l+1;j++){ //vertical cut end of some columns
 
-            for(int w=0;w<l;w++)//precondition: hor, change for ver
+    for (int i=0; i<15;i++) //horiontal all rows
+        for(int j=0,f=0;j<15;j++){ //hor cut end of some columns
+            for(int eachLength=2;eachLength<16-j;eachLength++){ //what's the length of searched word for legal issues
+
+            for(int w=0;w<eachLength;w++)//precondition: hor, change for ver
                 if(board.getSquareCopy(i,j+w).isOccupied())
                     fullWord+=board.getSquareCopy(i,j+w).getTile().getLetter();
                 else if (f<7){
@@ -223,46 +230,18 @@ public /*Coordinates**/ String[][] getLegalStart(/*Frame frame, Word word*/)
 
 
             if(board.isLegalPlay(frame, new Word(i,j,true, fullWord)))
-            { this.command+="I'm gay 1920 meaning";
-                coordinatesRC[i][j]+= l+","; //word.length()
+            { //this.command+="I'm gay 1920 meaning";
+                currLen = new Integer (eachLength);
+                allLengthsHere.add(currLen);
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         f = 0; //when finished creating and checking word legality, there is 0 used tiles in Frame again
         }
-    return coordinatesRC;
+            legalLenghts.put(new Coordinates(i,j),allLengthsHere);
+            allLengthsHere.clear();
+        }
+    return legalLenghts;
 }
-
-private HashMap<Coordinates,ArrayList<Integer>> parseLegalLengthsAt()
-{
-   String [][] lengthsStartingHere=  this.getLegalStart(); //Strings: "" "3"  "347"
-    String tempString = "";
-    int eachLength=0;
-    HashMap<Coordinates,ArrayList<Integer>> legalLenghts=new HashMap<Coordinates,ArrayList<Integer>>();
-  //
-    Integer currLen;
-    ArrayList<Integer> allLengthsHere = new ArrayList<Integer>();
-   for(int i=0;i<15;i++)
-       for(int j=0;j<15;j++)
-           /*if(lengthsStartingHere[i][j].length()>0)*/
-       {  eachLength=0;
-               while (eachLength < lengthsStartingHere[i][j].length()-1) {
-                   while (lengthsStartingHere[i][j].charAt(eachLength) != ',') {
-                       tempString += lengthsStartingHere[i][j].charAt(eachLength); //build each string number till comma
-
-                       currLen = Integer.parseInt(tempString);
-                       allLengthsHere.add(currLen);
-                       tempString = "";
-                       eachLength++;
-                   }
-                   if (lengthsStartingHere[i][j].charAt(eachLength) == ',')
-                       eachLength++;
-               }//allLengthsHere at one coordinate created
-             legalLenghts.put(new Coordinates(i,j),allLengthsHere);
-               allLengthsHere.clear();
-       }
-  return legalLenghts;
-}
-//yooho! we can save it, push to github and call it a day great plus you seen my googl
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////
