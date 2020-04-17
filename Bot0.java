@@ -157,7 +157,7 @@ public ArrayList <String> bruteForce (int wordSize){
 
     //use after updating unwrapped frame
     private Word generateWords(){
-      chosenDicWordForPlacement =new Word(7,7,true, this.permutations.get(2),"");
+      chosenDicWordForPlacement =new Word(7,7,true, this.permutations.get(0),"");
       return chosenDicWordForPlacement;
 
     }
@@ -221,22 +221,21 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
                 if(board.getSquareCopy(i,j+w).isOccupied())
                     fullWord+=board.getSquareCopy(i,j+w).getTile().getLetter();
                 else if (f<7){
-
                     fullWord += normalFrame.charAt(f);
                     f++;
                 }
                 else
                     fullWord+="XVX";
 
-
+this.command+= fullWord;
+this.command+="  |   ";
             if(board.isLegalPlay(frame, new Word(i,j,true, fullWord)))
-            { //this.command+="I'm gay 1920 meaning";
+            { this.command+="I'm gay 1920 meaning";
                 currLen = new Integer (eachLength);
                 allLengthsHere.add(currLen);
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
-        f = 0; //when finished creating and checking word legality, there is 0 used tiles in Frame again
-        }
+       f=0; fullWord=""; }
             legalLenghts.put(new Coordinates(i,j),allLengthsHere);
             allLengthsHere.clear();
         }
@@ -343,7 +342,7 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
 
                 command = "NAME CrispyChris";
                 command= this.build_command(this.generateWords());
-                command+=this.getLegalStart()+"  ";//.getRow()+" "+this.getLegalStart().getCol();
+                this.getLegalStart();//.getRow()+" "+this.getLegalStart().getCol();
                 command+=this.command;
                 break;
        /*     case 1:
