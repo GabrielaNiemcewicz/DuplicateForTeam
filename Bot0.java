@@ -201,7 +201,10 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
     unchrisIt();
     String fullWord = "";
     for(int i=0; i<this.normalFrame.length(); i++)
-        lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
+        lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));//lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
+    frame.addTiles(lettersIntoTiles);
+    this.command+=frame.toString();
+
    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....
     ArrayList <Integer> validWordLengthsHere = new ArrayList<Integer>();
     //String[][] coordinatesRC = new String[15][15];
@@ -215,11 +218,11 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
 
     for (int i=0; i<15;i++) //horiontal all rows
         for(int j=0,f=0;j<15;j++){ //hor cut end of some columns
-            for(int eachLength=2;eachLength<16-j;eachLength++){ //what's the length of searched word for legal issues
+            for(int eachLength=2; eachLength<16-j; eachLength++){ //what's the length of searched word for legal issues
 
             for(int w=0;w<eachLength;w++)//precondition: hor, change for ver
                 if(board.getSquareCopy(i,j+w).isOccupied())
-                    fullWord+=board.getSquareCopy(i,j+w).getTile().getLetter();
+                    fullWord+= board.getSquareCopy(i,j+w).getTile().getLetter();
                 else if (f<7){
                     fullWord += normalFrame.charAt(f);
                     f++;
@@ -227,14 +230,16 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
                 else
                     fullWord+="XVX";
 
-this.command+= fullWord;
-this.command+="  |   ";
-            if(board.isLegalPlay(frame, new Word(i,j,true, fullWord)))
-            { this.command+="I'm gay 1920 meaning";
+           if(board.isLegalPlay(frame, new Word(i,j,true, fullWord.toUpperCase())))
+            {   this.command+="I'm gay"+i+j+" years old && I enjoy "+fullWord+"         ";
+
+               // this.command+="  |   ";
                 currLen = new Integer (eachLength);
                 allLengthsHere.add(currLen);
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
+
+
        f=0; fullWord=""; }
             legalLenghts.put(new Coordinates(i,j),allLengthsHere);
             allLengthsHere.clear();
