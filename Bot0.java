@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Bot0 implements BotAPI
@@ -192,7 +193,7 @@ public ArrayList <String> bruteForce (int wordSize){
 
     }
 //prototype
-public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word word*/)
+public HashMap<Coordinates,ArrayList<String>> getLegalStart()
 { Frame frame = new Frame();
     ArrayList<Tile> lettersIntoTiles = new ArrayList<Tile> ();
 
@@ -201,9 +202,13 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
     unchrisIt();
     String fullWord = "";
     for(int i=0; i<this.normalFrame.length(); i++)
-        lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));//lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
+        lettersIntoTiles.add(new Tile (this.normalFrame.toUpperCase().charAt(i)));
     frame.addTiles(lettersIntoTiles);
     this.command+=frame.toString();
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...
+    String thisWordFormat="";
+    ArrayList<String> wordFormatsAt = new ArrayList<String>();
+    HashMap <Coordinates, ArrayList<String>> legalWordsFormats = new HashMap <Coordinates, ArrayList<String>>();
 
    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....
     ArrayList <Integer> validWordLengthsHere = new ArrayList<Integer>();
@@ -222,30 +227,60 @@ public HashMap<Coordinates,ArrayList<Integer>> getLegalStart(/*Frame frame, Word
 
             for(int w=0;w<eachLength;w++)//precondition: hor, change for ver
                 if(board.getSquareCopy(i,j+w).isOccupied())
-                    fullWord+= board.getSquareCopy(i,j+w).getTile().getLetter();
+                {  fullWord+= board.getSquareCopy(i,j+w).getTile().getLetter();
+                thisWordFormat+=board.getSquareCopy(i,j+w).getTile().getLetter();}
                 else if (f<7){
                     fullWord += normalFrame.charAt(f);
+                    thisWordFormat+="*";
                     f++;
                 }
                 else
                     fullWord+="XVX";
 
            if(board.isLegalPlay(frame, new Word(i,j,true, fullWord.toUpperCase())))
-            {   this.command+="I'm gay"+i+j+" years old && I enjoy "+fullWord+"         ";
+            {
 
-               // this.command+="  |   ";
+               wordFormatsAt.add(thisWordFormat);
+
                 currLen = new Integer (eachLength);
                 allLengthsHere.add(currLen);
+
+
+
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
 
 
-       f=0; fullWord=""; }
+       f=0; fullWord=""; thisWordFormat = "";
+            }
+            if(!wordFormatsAt.isEmpty())
+                legalWordsFormats.put(new Coordinates (i,j), wordFormatsAt);
+            wordFormatsAt.clear();
             legalLenghts.put(new Coordinates(i,j),allLengthsHere);
             allLengthsHere.clear();
         }
-    return legalLenghts;
+    return legalWordsFormats;
 }
+
+public void permuteInWordFormats(){
+    HashMap<Coordinates,ArrayList<String>> legalWordsFormats =  this.getLegalStart();
+    HashMap<Coordinates,ArrayList<String>> realWords = new HashMap<Coordinates,ArrayList<String>>();
+    ArrayList<String> permutations = new ArrayList<>();
+    String format = "";
+    int coord_iterator = 0;
+
+    for (HashMap.Entry<Coordinates, ArrayList<String>> entry : legalWordsFormats.entrySet()) {
+        //we're in each arraylist of formats for 1 of coordinates
+    for(int eachF=0; eachF<entry.getValue().size(); eachF++)
+        format = entry.getValue().get(eachF); //we have 1 of possible formats in this arraylist. 
+    }
+        System.out.println(entry.getKey() + " = " + entry.getValue());
+    }
+    /*
+   while(coord_iterator< legalWordsFormats.size())
+       legalWordsFormats.
+        }*/
+
 
 
     /////////////////////////////////////////////////////////////////////////////////////
