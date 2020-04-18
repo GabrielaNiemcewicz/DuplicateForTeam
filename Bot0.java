@@ -265,16 +265,43 @@ public HashMap<Coordinates,ArrayList<String>> getLegalStart()
 public void permuteInWordFormats(){
     HashMap<Coordinates,ArrayList<String>> legalWordsFormats =  this.getLegalStart();
     HashMap<Coordinates,ArrayList<String>> realWords = new HashMap<Coordinates,ArrayList<String>>();
-    ArrayList<String> permutations = new ArrayList<>();
+
+    ArrayList<String> permutations = new ArrayList<>(); //merge between brute force permutations and legal word formats
     String format = "";
+    String gibberishWord= "";
     int coord_iterator = 0;
+    int nr_of_stars = 0;
+
+    ArrayList<String>[] starPermutations = new ArrayList[7]; //lengths 1,2,3,4,5,6,7
+    // initialize each of frame tiles permutations
+    for (int i = 0; i < 7; i++) {
+        starPermutations[i] = new ArrayList<String>();
+        //fill with real permutations
+        starPermutations[i].addAll(this.bruteForce(i));
+    }
+
 
     for (HashMap.Entry<Coordinates, ArrayList<String>> entry : legalWordsFormats.entrySet()) {
         //we're in each arraylist of formats for 1 of coordinates
-    for(int eachF=0; eachF<entry.getValue().size(); eachF++)
-        format = entry.getValue().get(eachF); //we have 1 of possible formats in this arraylist. 
+    for(int eachF=0; eachF<entry.getValue().size(); eachF++) {
+        format = entry.getValue().get(eachF); //we have 1 of possible formats in this arraylist.
+        for(int eachL=0; eachL<entry.getValue().size(); eachL++)  //**b* => 3-letter permutations, so count *s
+             if(format.charAt(eachL)=='*')
+                 nr_of_stars++;
+            // *g**a**
+        for(int eachL=0, perm_i=0; eachL<entry.getValue().size(); eachL++)  //**b* => fill format with permutations to create a gibberish word
+            if(format.charAt(eachL)=='*') {
+                gibberishWord += starPermutations[nr_of_stars].get(0).charAt(perm_i);
+                perm_i++;
+            }
+            else
+                gibberishWord+=format.charAt(eachL);
+           //gibberish word is created
+
+    permutations.add(gibberishWord);
     }
-        System.out.println(entry.getKey() + " = " + entry.getValue());
+    }
+     //   System.out.println(entry.getKey() + " = " + entry.getValue());
     }
     /*
    while(coord_iterator< legalWordsFormats.size())
