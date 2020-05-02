@@ -1,0 +1,179 @@
+import java.util.ArrayList;
+
+
+public class TrieNode{
+
+    private static final int FRAME_LENGTH = 7;
+    private String parentMemory;
+    private int permutationDepth;
+    private ArrayList<TrieNode> children = new ArrayList<TrieNode>();
+    int indexInFrame;
+    private String thisPermutation;
+    private static final int REACH_DEPTH = 7;
+    public int depth;
+
+    TrieNode(String parentPermutation, int depth, String normalFrame) {
+//parent has to input [""]
+        this.thisPermutation = parentPermutation;
+        this.parentMemory= normalFrame; //letters not used in permutation yet
+        //children
+        //this.playersLetters= normalFrame;
+
+        this.depth=depth;
+        if(!parentMemory.isEmpty())
+        {
+        this.makeChildren(depth+1);
+        }
+
+    }
+
+    TrieNode(String normalFrame) {
+//parent has to input [""]
+        this.thisPermutation = "";
+        this.parentMemory= normalFrame;
+        this.depth=0;
+
+        //children
+        //this.playersLetters= normalFrame;
+
+
+        if(depth<REACH_DEPTH)
+        {
+            this.makeChildren(depth+1);
+        }
+
+    }
+
+
+   /* public ArrayList<String> getFromDepth(int howManyFrameLetters){
+        ArrayList<String> permsForThisLength = new ArrayList<String>();
+        ArrayList<TrieNode>temp = new ArrayList<TrieNode>();
+        if (howManyFrameLetters==1) //if we're at the right depth, do
+            for (int i =0; i <this.children.size();i++) //collect
+                if(this.children.get(i)!=null)
+                permsForThisLength.add(children.get(i).getThisPermutation());
+        else if (howManyFrameLetters>1 && howManyFrameLetters<8)
+
+    }*/
+
+    public void makeChildren (int reachedDepth){ //one depth
+        int depth = 0;
+        StringBuilder character= new StringBuilder();
+        StringBuilder charsLeft= new StringBuilder();
+
+        char addedLetter;
+       // while (depth < 8){
+        //    depth++;
+            for (int i = 0; i < parentMemory.length(); i++) {
+                character.append(parentMemory.charAt(i));
+                if(this==null)
+                    continue;
+                else
+                    if(this.thisPermutation.contains(character.toString()))
+                    children.add(null);
+              else  if (thisPermutation.isEmpty()/*||!parentMemory.contains(character.toString())*/) //if parent permutation has frame letters already, we don't repeat them in child permutations
+                {   charsLeft.append(parentMemory);
+                    addedLetter= adNextLetter(parentMemory.charAt(i));
+                    charsLeft.deleteCharAt(i);
+
+                    children.add(new TrieNode(thisPermutation.toString()+addedLetter, reachedDepth,charsLeft.toString()));
+                    System.out.println(children.get(i).getThisPermutation());
+                    //   for (int i=0; i<this.getChildren().length; i++)
+                  //  this.getChild(i).adNextLetter(playersLetters.charAt(i));
+
+                }
+
+            //System.out.println("other reason for error");
+               while (charsLeft.length()!=0) {charsLeft.delete(0,1);}
+        character.delete(0,1); }
+        //}
+
+    }
+/*
+    public void addChild (char nextLetter) {
+        this.depth--; //for needed
+
+        this.children.add(new TrieNode());
+
+
+    }*/
+
+    public ArrayList<TrieNode> getChildren () {
+
+        return children;
+    }
+    public TrieNode getChild (int index) {
+
+        return children.get(index);
+    }
+
+    public char adNextLetter(char nextLetter){
+        //p
+        //   /  \
+        //c1   c2
+        //child's perspective, take it from parent
+        //or
+        //parent's perspective, add to child **
+        //prerequisite: children are initatied and exist one by one
+        //this.thisPermutation+=
+        return nextLetter;
+
+
+    }
+
+    public String getThisPermutation(){
+        return  thisPermutation;
+    }
+
+
+    public void setLength(int length){
+        this.permutationDepth= length;
+
+    }
+
+    public void setIndexInFrame(int index){
+        this.indexInFrame = index;
+    }
+
+    //limited prototype for testing purposes
+    public ArrayList<String> dummyGetter(){ //depth 3
+        ArrayList<String> dummySameDepthOutput = new ArrayList<String> ();
+        dummySameDepthOutput.add(this.getChild(1).getChild(5).getChild(4).getThisPermutation()); //not in dic
+        dummySameDepthOutput.add(this.getChild(4).getChild(1).getChild(3).getThisPermutation()); //in dic
+        dummySameDepthOutput.add(this.getChild(0).getChild(1).getChild(2).getThisPermutation()); //in dic
+        dummySameDepthOutput.add(this.getChild(4).getChild(1).getChild(2).getThisPermutation()); //not in dic
+        return dummySameDepthOutput;
+    }
+
+    public static void main(String[] args)
+    {
+        TrieNode trieNode = new TrieNode( "PAPACRI");
+        //System.out.println(trieNode.getChild(1).getChild(6).getChild(4).getThisPermutation());
+        ArrayList <String> dummyPermutations = new ArrayList <String> ();
+        dummyPermutations.addAll(trieNode.dummyGetter());
+        for(int i =0; i<dummyPermutations.size(); i++)
+            System.out.println(dummyPermutations.get(i)+"   ");
+      /*  trieNode.makeChildren(0);
+        String output = "";
+        for(int i=0;i<7;i++)
+            output+=trieNode.getChild(i).getThisPermutation()+"  ";
+        System.out.println(output);
+        output = "";
+        System.out.println(" -------------------level 2---------------------------------");
+     ArrayList<TrieNode>level2 =  new  ArrayList<TrieNode>();
+     level2.addAll(trieNode.getChildren());
+        System.out.println(level2.size());
+     for(int j =0; j<7; j++)
+     {  level2.get(j).makeChildren();
+        for(int i=0;i<7;i++) {
+            if(level2.get(j).getChild(i)!=null)
+            output += level2.get(j).getChild(i).getThisPermutation() + "  ";
+        }*/
+
+    // }
+
+
+
+
+    }
+}
