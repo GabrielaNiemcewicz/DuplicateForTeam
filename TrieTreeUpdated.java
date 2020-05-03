@@ -1,3 +1,5 @@
+package com.example.HelloWorld;
+
 import java.util.*;
 
 public class TrieTree {
@@ -92,16 +94,35 @@ public class TrieTree {
         }
     }
 
-    public static void main(String[] args) {
+    TrieTree(){
         root = new TrieNode();
         PermutedWordsList = new ArrayList<String>();
-        CreatePermutation("abc");
-
-//        PermutedWordsList.forEach(eachPermutation-> System.out.println(eachPermutation));
-        PermutedWordsList.forEach(eachPermutation -> insertIntoTree(eachPermutation));
-//        DisplayWords(root,"");
-//        DisplayWordsOnDepth(root,0,3,"");
     }
 
+    public void SetupTree(String GivenWord) {
+        CreatePermutation(GivenWord);
+        PermutedWordsList.forEach(eachPermutation -> insertIntoTree(eachPermutation));
+//        PermutedWordsList.forEach(eachPermutation-> System.out.println(eachPermutation));
+    }
 
+    public void DisplayAllWords(){
+        DisplayWords(root,"");
+    }
+
+    public void DisplayWordAtDepth(int depth){
+        DisplayWordsOnDepth(root,0,depth,"");
+    }
 }
+
+// USE THE FOLLOWING CODE IN A SEPARATE CLASS (BUT USE IT AS PART OF THE SAME PACKAGE) TO ACCESS THE ABOVE TRIETREE CLASS AS SHOWN BELOW
+//package com.example.HelloWorld;
+//
+//public class HelloWorld {
+//    public static void main(String[] args) {
+//        TrieTree MyTree= new TrieTree();
+//        System.out.println("reached here");
+//        MyTree.SetupTree("john");
+//        //MyTree.DisplayAllWords();
+//        MyTree.DisplayWordAtDepth(1);
+//    }
+//}
