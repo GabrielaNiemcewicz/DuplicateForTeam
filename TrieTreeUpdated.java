@@ -1,10 +1,10 @@
-package com.example.HelloWorld;
-
 import java.util.*;
 
-public class TrieTree {
+class TrieTree {
 
     static List<String> PermutedWordsList;
+    static ArrayList<String> LeafNodeArrayList;
+    static ArrayList<String> CharAtDepthArrayList;
 
     // Trie Node holding children and character information
     static class TrieNode {
@@ -60,6 +60,22 @@ public class TrieTree {
         }
     }
 
+    // Function to add values of lead nodes to an array
+    static void AddLeafNodeStringToArray(TrieNode CurrentNode, String Prefix) {
+
+        if (CurrentNode.isLeaf == true) {
+            LeafNodeArrayList.add(Prefix);
+        } else {
+            HashMap<Character, TrieNode> children = CurrentNode.children;
+
+            for (Map.Entry mapElement : children.entrySet()) {
+                String key = String.valueOf(mapElement.getKey());
+                TrieNode ChildNode = (TrieNode) mapElement.getValue();
+                AddLeafNodeStringToArray(ChildNode,Prefix+key);
+            }
+        }
+    }
+
     // Function to display words till a certain depth is reached
     static void DisplayWordsOnDepth(TrieNode CurrentNode,int NodeDepthValue,int DesiredDepthValue, String Prefix) {
 
@@ -72,6 +88,22 @@ public class TrieTree {
                 String key = String.valueOf(mapElement.getKey());
                 TrieNode ChildNode = (TrieNode) mapElement.getValue();
                 DisplayWordsOnDepth(ChildNode,NodeDepthValue+1,DesiredDepthValue,Prefix+key);
+            }
+        }
+    }
+
+    // Function to add words to array list at a certain depth
+    static void AddWordsToArrayOnDepth(TrieNode CurrentNode,int NodeDepthValue,int DesiredDepthValue, String Prefix) {
+
+        if (DesiredDepthValue==NodeDepthValue) {
+            CharAtDepthArrayList.add(Prefix);
+        } else {
+            HashMap<Character, TrieNode> children = CurrentNode.children;
+
+            for (Map.Entry mapElement : children.entrySet()) {
+                String key = String.valueOf(mapElement.getKey());
+                TrieNode ChildNode = (TrieNode) mapElement.getValue();
+                AddWordsToArrayOnDepth(ChildNode,NodeDepthValue+1,DesiredDepthValue,Prefix+key);
             }
         }
     }
@@ -97,6 +129,8 @@ public class TrieTree {
     TrieTree(){
         root = new TrieNode();
         PermutedWordsList = new ArrayList<String>();
+        LeafNodeArrayList = new ArrayList<String>();
+        CharAtDepthArrayList = new ArrayList<String>();
     }
 
     public void SetupTree(String GivenWord) {
@@ -112,17 +146,32 @@ public class TrieTree {
     public void DisplayWordAtDepth(int depth){
         DisplayWordsOnDepth(root,0,depth,"");
     }
+
+    public ArrayList<String> GetArrayListLeafNodes(){
+        LeafNodeArrayList.clear();
+        AddLeafNodeStringToArray(root,"");
+        return LeafNodeArrayList;
+    }
+
+    public ArrayList<String> GetArrayListAtDepth(int depth){
+        CharAtDepthArrayList.clear();
+        AddWordsToArrayOnDepth(root,0,depth,"");
+        return CharAtDepthArrayList;
+    }
+
 }
 
-// USE THE FOLLOWING CODE IN A SEPARATE CLASS (BUT USE IT AS PART OF THE SAME PACKAGE) TO ACCESS THE ABOVE TRIETREE CLASS AS SHOWN BELOW
-//package com.example.HelloWorld;
-//
-//public class HelloWorld {
-//    public static void main(String[] args) {
-//        TrieTree MyTree= new TrieTree();
-//        System.out.println("reached here");
-//        MyTree.SetupTree("john");
-//        //MyTree.DisplayAllWords();
-//        MyTree.DisplayWordAtDepth(1);
-//    }
-//}
+
+class HelloWorld {
+    public static void main(String[] args) {
+        TrieTree MyTree= new TrieTree();
+        MyTree.SetupTree("john");
+        ArrayList<String> LeafNodeWords = MyTree.GetArrayListLeafNodes();
+        ArrayList<String> NodeWordsAtDepth = MyTree.GetArrayListAtDepth(3);
+
+        // LeafNodeWords.forEach((str) -> System.out.println(str));
+        // NodeWordsAtDepth.forEach((str) -> System.out.println(str));
+        // MyTree.DisplayAllWords();
+        // MyTree.DisplayWordAtDepth(1);
+    }
+}
