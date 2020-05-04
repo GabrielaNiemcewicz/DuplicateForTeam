@@ -162,16 +162,17 @@ class TrieTree {
 }
 
 
-class HelloWorld {
-    public static void main(String[] args) {
-        TrieTree MyTree= new TrieTree();
-        MyTree.SetupTree("john");
-        ArrayList<String> LeafNodeWords = MyTree.GetArrayListLeafNodes();
-        ArrayList<String> NodeWordsAtDepth = MyTree.GetArrayListAtDepth(3);
+//class HelloWorld {
+//    public static void main(String[] args) {
+//        TrieTree MyTree= new TrieTree();
+//        MyTree.SetupTree("john");
+//        ArrayList<String> LeafNodeWords = MyTree.GetArrayListLeafNodes();
+//        ArrayList<String> NodeWordsAtDepth = MyTree.GetArrayListAtDepth(3);
+//
+//        // LeafNodeWords.forEach((str) -> System.out.println(str));
+//        // NodeWordsAtDepth.forEach((str) -> System.out.println(str));
+//        // MyTree.DisplayAllWords();
+//        // MyTree.DisplayWordAtDepth(1);
+//    }
+//}
 
-        // LeafNodeWords.forEach((str) -> System.out.println(str));
-        // NodeWordsAtDepth.forEach((str) -> System.out.println(str));
-        // MyTree.DisplayAllWords();
-        // MyTree.DisplayWordAtDepth(1);
-    }
-}
